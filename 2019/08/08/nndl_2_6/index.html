@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="Firepaw">
 <meta property="og:description" content="假设有$N$个样本$x^{(1)}, x^{(2)}, \cdots ,x^{(N)}$服从正态分布$\mathcal N(\mu,\sigma^2)$，其中$\mu$未知。(1)使用最大似然估计来求解最优参数 $\mu_{ML}$。(2)若参数$\mu$为随机变 量，并服从正态分布$\mathcal N(\mu_0, \sigma_0^2)$，使用最大后验估计来求解最优参数$\mu_{MAP}$">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-08-08T10:22:02.064Z">
+<meta property="og:updated_time" content="2019-08-08T10:24:19.925Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="最大似然估计高斯分布">
 <meta name="twitter:description" content="假设有$N$个样本$x^{(1)}, x^{(2)}, \cdots ,x^{(N)}$服从正态分布$\mathcal N(\mu,\sigma^2)$，其中$\mu$未知。(1)使用最大似然估计来求解最优参数 $\mu_{ML}$。(2)若参数$\mu$为随机变 量，并服从正态分布$\mathcal N(\mu_0, \sigma_0^2)$，使用最大后验估计来求解最优参数$\mu_{MAP}$">
@@ -319,7 +319,6 @@
 <p>2-7 证明当$N\rightarrow \infty$时，最大后验估计趋于最大似然估计</p>
 <p>意味着做无数次实验之后，先验知识已经完全不重要了。</p>
 <p>$$<br>\begin{aligned}<br>\lim_{N \rightarrow \infty} \mu_{MAP} &amp;=\lim_{N \rightarrow \infty} \frac{\sigma_0^2(\sum_{j=1}^{N}x_j)+\sigma^2\mu_0}{\sigma_0^2N + \sigma^2}<br>\\ &amp;= \lim_{N \rightarrow \infty} \frac{\sigma_0^2(\sum_{j=1}^{N}x_j)}{\sigma_0^2N + \sigma^2}<br>\\ &amp;= \lim_{N \rightarrow \infty} \frac{\sigma_0^2(\sum_{j=1}^{N}x_j)}{\sigma_0^2N}<br>\\ &amp;= \frac{1}{N}\sum_{j=1}^{N}x_j<br>\\ &amp;= \mu_{ML}<br>\end{aligned}<br>$$</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
       
     </div>
