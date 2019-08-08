@@ -98,7 +98,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/08/08/Linear-Regression/output_27_1.png">
 <meta property="og:image" content="http://yoursite.com/2019/08/08/Linear-Regression/output_29_1.png">
 <meta property="og:image" content="http://yoursite.com/2019/08/08/Linear-Regression/output_33_1.png">
-<meta property="og:updated_time" content="2019-08-08T08:09:57.435Z">
+<meta property="og:updated_time" content="2019-08-08T08:12:27.803Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="线性回归">
 <meta name="twitter:description" content="线性回归： $$f({\mathbf x}; \theta) = {\bf w}^T{\bf x} + b$$ 的经验风险定义为： $$\begin{aligned}\mathcal{R}(\mathbf{w}) &amp;amp; = \sum_{n=1}^{N}\mathcal{L}(y^{(n)}, f(\mathbf{x}^{(n)}; \mathbf{w}))\\ &amp;amp;= \frac{1}">
@@ -316,7 +316,7 @@
 <p>$$<br>f({\mathbf x}; \theta) = {\bf w}^T{\bf x} + b<br>$$</p>
 <p>的经验风险定义为：</p>
 <p>$$<br>\begin{aligned}<br>\mathcal{R}(\mathbf{w}) &amp; = \sum_{n=1}^{N}\mathcal{L}(y^{(n)}, f(\mathbf{x}^{(n)}; \mathbf{w}))<br>\\ &amp;= \frac{1}{2}\sum_{n=1}^N(y^{(n)}-\mathbf{w}^T\mathbf{x}^{(n)})^2<br>\\ &amp;= \frac{1}{2}\lVert\mathbf{y}-X^T\mathbf{w}\rVert^2<br>\end{aligned}<br>$$<br>其中$\mathbf{y} \in \mathbb{R}^N$是由每个真是标签$y^{(1)}, y^{(2)}, \cdots ,y^{(N)}$组成的列向量，$X \in \mathbb{R}^{(d+1)\times N}$是所有输入$x^{(1)}, x^{(2)}, \cdots, x^{(N)}$组成的矩阵：</p>
-<p>$$<br>X =<br> \left[<br> \begin{matrix}<br>   x_1^{(1)} &amp; x_1^{(2)} &amp; \cdots &amp; x_1^{(N)} \<br>   \vdots &amp; \vdots &amp; \ddots &amp; \vdots \<br>   x_d^{(1)} &amp; x_d^{(2)} &amp; \cdots &amp; x_d^{(N)} \<br>   1 &amp; 1 &amp; \cdots &amp; 1<br>  \end{matrix}<br>  \right] \tag{3}<br>$$<br>风险函数$\mathcal{R}(\mathbf{w})$是关于$\mathbf{w}$的凸函数，它对$\mathbf{w}$的偏导为：</p>
+<p>$$<br>X =<br> \left[<br> \begin{matrix}<br>   x_1^{(1)} &amp; x_1^{(2)} &amp; \cdots &amp; x_1^{(N)} \\<br>   \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\<br>   x_d^{(1)} &amp; x_d^{(2)} &amp; \cdots &amp; x_d^{(N)} \\<br>   1 &amp; 1 &amp; \cdots &amp; 1<br>  \end{matrix}<br>  \right] \tag{3}<br>$$<br>风险函数$\mathcal{R}(\mathbf{w})$是关于$\mathbf{w}$的凸函数，它对$\mathbf{w}$的偏导为：</p>
 <p>$$<br>\begin{aligned}<br>\frac{\partial\mathcal{R}(\mathbf{w})}{\partial\mathbf{w}} &amp;= \frac{1}{2} \frac{\partial{\lVert\mathbf{y}-X^T\mathbf{w}}\rVert^2 }{\partial\mathbf{w}}<br>\\ &amp;= -X(\mathbf{y}-X^T\mathbf{w})<br>\end{aligned}<br>$$</p>
 <p>令$\frac{\partial}{\partial\mathbf{w}}\mathcal{R}(\mathbf{w})=0$，得到最优的参数$\mathbf{w}^*$为：</p>
 <p>$$<br>\begin{aligned}<br>\mathbf{w}^* &amp;= (XX^T)^{-1}X\mathbf{y}<br>\\ &amp;= {\bigl (}\sum_{n=1}^Nx^{(n)} (\mathbf x^{(n)})^T {\bigr )} ^{-1} {\bigl (} \sum_{n=1}^N \mathbf x^{(n)} y^{(n)} {\bigr )}<br>\end{aligned}<br>$$</p>
