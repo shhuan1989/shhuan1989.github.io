@@ -79,14 +79,17 @@
 
 
 
+<meta name="description" content="假设有$N$个样本$x^{(1)}, x^{(2)}, \cdots ,x^{(N)}$服从正态分布$\mathcal N(\mu,\sigma^2)$，其中$\mu$未知。(1)使用最大似然估计来求解最优参数 $\mu_{ML}$。(2)若参数$\mu$为随机变 量，并服从正态分布$\mathcal N(\mu_0, \sigma_0^2)$，使用最大后验估计来求解最优参数$\mu_{MAP}$">
 <meta property="og:type" content="article">
-<meta property="og:title" content="nndl_2_6">
+<meta property="og:title" content="最大似然估计高斯分布">
 <meta property="og:url" content="http://yoursite.com/2019/08/08/nndl-2-6/index.html">
 <meta property="og:site_name" content="Firepaw">
+<meta property="og:description" content="假设有$N$个样本$x^{(1)}, x^{(2)}, \cdots ,x^{(N)}$服从正态分布$\mathcal N(\mu,\sigma^2)$，其中$\mu$未知。(1)使用最大似然估计来求解最优参数 $\mu_{ML}$。(2)若参数$\mu$为随机变 量，并服从正态分布$\mathcal N(\mu_0, \sigma_0^2)$，使用最大后验估计来求解最优参数$\mu_{MAP}$">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-08-08T10:17:10.037Z">
+<meta property="og:updated_time" content="2019-08-08T10:18:21.097Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="nndl_2_6">
+<meta name="twitter:title" content="最大似然估计高斯分布">
+<meta name="twitter:description" content="假设有$N$个样本$x^{(1)}, x^{(2)}, \cdots ,x^{(N)}$服从正态分布$\mathcal N(\mu,\sigma^2)$，其中$\mu$未知。(1)使用最大似然估计来求解最优参数 $\mu_{ML}$。(2)若参数$\mu$为随机变 量，并服从正态分布$\mathcal N(\mu_0, \sigma_0^2)$，使用最大后验估计来求解最优参数$\mu_{MAP}$">
 
 
 
@@ -122,7 +125,7 @@
 
 
 
-  <title>nndl_2_6 | Firepaw</title>
+  <title>最大似然估计高斯分布 | Firepaw</title>
   
 
 
@@ -246,7 +249,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">nndl_2_6</h1>
+          <h1 class="post-title" itemprop="name headline">最大似然估计高斯分布</h1>
         
 
         <div class="post-meta">
@@ -258,7 +261,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-08T18:17:10+08:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-08T18:31:00+08:00">
                 2019-08-08
               </time>
             
@@ -296,7 +299,28 @@
       
 
       
-        
+        <p>假设有$N$个样本$x^{(1)}, x^{(2)}, \cdots ,x^{(N)}$服从正态分布$\mathcal N(\mu,\sigma^2)$，其<br>中$\mu$未知。(1)使用最大似然估计来求解最优参数 $\mu_{ML}$。(2)若参数$\mu$为随机变 量，并服从正态分布$\mathcal N(\mu_0, \sigma_0^2)$，使用最大后验估计来求解最优参数$\mu_{MAP}$。<br><a id="more"></a></p>
+<p>(1)</p>
+<p>高斯分布：</p>
+<p>$$<br>f_{\mathbf x}(x_j) = (2 \pi \sigma^2)^{-\frac{1}{2}}\ exp \bigl ( -\frac{1}{2} \frac{(x_j-\mu)^2}{\sigma^2}\bigr )<br>$$</p>
+<p>似然函数为：</p>
+<p>$$<br>\begin{aligned}<br>\mathcal L (\mu, \sigma^2; x_1, x_2, \cdots, x_n) &amp;= \prod_{j=1}^N (2 \pi \sigma^2)^{-\frac{1}{2}}\ exp \bigl ( -\frac{1}{2} \frac{(x_j-\mu)^2}{\sigma^2}\bigr )<br>\\ &amp;= (2 \pi \sigma^2)^{-\frac{N}{2}}\ exp \bigl ( \sum_{j=1}^N -\frac{1}{2} \frac{(x_j-\mu)^2}{\sigma^2} \bigr )<br>\\ &amp;= (2 \pi \sigma^2)^{-\frac{N}{2}}\ exp \bigl ( -\frac{1}{2\sigma^2} \sum_{j=1}^N (x_j-\mu)^2 \bigr )<br>\end{aligned}<br>$$</p>
+<p>得到对数似然函数：</p>
+<p>$$<br>\begin{aligned}<br>\mathcal L(\mu, \sigma^2; x_1, x_2, \cdots, x_n) &amp;= -\frac{N}{2}ln(2\pi) - \frac{N}{2}ln(\sigma^2) -\frac{1}{2\sigma^2} \sum_{j=1}^N (x_j-\mu)^2<br>\end{aligned}<br>$$</p>
+<p>对$\mu$求偏导并令其等于$0$得到：</p>
+<p>$$<br>\begin{aligned}<br>\frac{\partial \mathcal L(\mu, \sigma^2; x_1, x_2, \cdots, x_n)}{\partial \mu} &amp;= \frac{1}{\sigma^2} \sum_{j=1}^N(x_j-\mu) = 0<br>\\ \Rightarrow &amp; \sum_{j=1}^N(x_j-\mu) = 0<br>\\ \Rightarrow &amp; \mu_{ML} = \frac{1}{N} \sum_{j=1}^Nx_j<br>\end{aligned}<br>$$</p>
+<p>同样对$\sigma^2$求偏导并令其等于$0$得到：<br>$$<br>\begin{aligned}<br>\frac{\partial \mathcal L(\mu, \sigma^2; x_1, x_2, \cdots, x_n)}{\partial \sigma^2} &amp;= -\frac{N}{2\sigma^2} - \frac{1}{2} \sum_{j=1}^N (x_j-\mu)^2 \frac{\partial}{\partial \sigma^2} (\frac{1} {\sigma^2})<br>\\ &amp;= -\frac{N}{2\sigma^2} - \frac{1}{2} \sum_{j=1}^N (x_j-\mu)^2 (-\frac{1} {(\sigma^2)^2})<br>\\ &amp;= -\frac{N}{2\sigma^2} + \frac{1}{2} \sum_{j=1}^N (x_j-\mu)^2 (\frac{1} {(\sigma^2)^2})<br>\\ &amp;= \frac{1}{2\sigma^2} \bigl (\frac{1} {\sigma^2} \sum_{j=1}^N (x_j-\mu)^2 - N \bigr )<br>\\ &amp;= 0<br>\\ \Rightarrow &amp; \sigma^2 = \frac{1}{N} \sum_{j=1}^N (x_j-\mu)^2<br>\end{aligned}<br>$$</p>
+<p>(2)<br>要使得后验概率最大：</p>
+<p>$$<br>\begin{aligned}<br>\hat\mu_{MAP} &amp;= \underset{\mu}{\arg \max} \rho(\mu|X)<br>\\ &amp;= \underset{\mu}{\arg \max}\frac{\rho(X|\mu)\rho(\mu)}{\rho(X)}<br>\\ &amp;= \underset{\mu}{\arg \max} \rho(X|\mu)\rho(\mu)<br>\end{aligned}<br>$$</p>
+<p>取对数得到：</p>
+<p>$$<br>\begin{aligned}<br>\mathcal L = \underset{\mu}{\arg \max}\ Pr(\mu|X)&amp;=\underset{\mu}{\arg \max}\ log\ Pr(\mu|X)<br>\\&amp;=\underset{\mu}{\arg \max}\ log\ \prod_{x_i \in X}\ Pr(x_i|\mu) \cdot Pr(\mu)<br>\\ &amp;= \underset{\mu}{\arg \max}\ \sum_{x_i \in X}{log \ Pr(x_i|\mu)} + log \ Pr(\mu)<br>\end{aligned}<br>$$</p>
+<p>其中$Pr(\mu) \sim \mathcal N (\mu_0, \sigma_0^2)$，对目标函数求导：</p>
+<p>$$<br>\begin{aligned}<br>\frac{\partial \mathcal L}{\mu} &amp;= \sum_{i=1}^N { \frac{\partial}{\partial \mu} log Pr(x_i| \mu) } + \frac{\partial}{\partial \mu} log \mathcal N (\mu_0, \sigma_0^2) = 0<br>\\ \Rightarrow &amp; \frac{1}{\sigma^2} \sum_{j=1}^N(x_j-\mu) + (\frac{\mu-\mu_0}{\sigma_0})^2 = 0<br>\\ \Rightarrow &amp; \mu_{MAP} = \frac{\sigma_0^2(\sum_{j=1}^{N}x_j)+\sigma^2\mu_0}{\sigma_0^2N + \sigma^2}<br>\end{aligned}<br>$$</p>
+<p>2-7 证明当$N\rightarrow \infty$时，最大后验估计趋于最大似然估计</p>
+<p>意味着做无数次实验之后，先验知识已经完全不重要了。</p>
+<p>$$<br>\begin{aligned}<br>\lim_{N \rightarrow \infty} \mu_{MAP} &amp;=\lim_{N \rightarrow \infty} \frac{\sigma_0^2(\sum_{j=1}^{N}x_j)+\sigma^2\mu_0}{\sigma_0^2N + \sigma^2}<br>\\ &amp;= \lim_{N \rightarrow \infty} \frac{\sigma_0^2(\sum_{j=1}^{N}x_j)}{\sigma_0^2N + \sigma^2}<br>\\ &amp;= \lim_{N \rightarrow \infty} \frac{\sigma_0^2(\sum_{j=1}^{N}x_j)}{\sigma_0^2N}<br>\\ &amp;= \frac{1}{N}\sum_{j=1}^{N}x_j<br>\\ &amp;= \mu_{ML}<br>\end{aligned}<br>$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
       
     </div>
     
