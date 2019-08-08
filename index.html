@@ -229,6 +229,146 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/08/nndl_2_6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Firepaw">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Firepaw">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/08/nndl_2_6/" itemprop="url">Untitled</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-08T18:13:40+08:00">
+                2019-08-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>假设有$N$个样本$x^{(1)}, x^{(2)}, \cdots ,x^{(N)}$服从正态分布$\mathcal N(\mu,\sigma^2)$，其<br>中$\mu$未知。(1)使用最大似然估计来求解最优参数 $\mu_{ML}$。(2)若参数$\mu$为随机变 量，并服从正态分布$\mathcal N(\mu_0, \sigma_0^2)$，使用最大后验估计来求解最优参数$\mu_{MAP}$。</p>
+<p>(1)</p>
+<p>高斯分布：</p>
+<p>$$<br>f_{\mathbf x}(x_j) = (2 \pi \sigma^2)^{-\frac{1}{2}}\ exp \bigl ( -\frac{1}{2} \frac{(x_j-\mu)^2}{\sigma^2}\bigr )<br>$$</p>
+<p>似然函数为：</p>
+<p>$$<br>\begin{aligned}<br>\mathcal L (\mu, \sigma^2; x_1, x_2, \cdots, x_n) &amp;= \prod_{j=1}^N (2 \pi \sigma^2)^{-\frac{1}{2}}\ exp \bigl ( -\frac{1}{2} \frac{(x_j-\mu)^2}{\sigma^2}\bigr )<br>\\ &amp;= (2 \pi \sigma^2)^{-\frac{N}{2}}\ exp \bigl ( \sum_{j=1}^N -\frac{1}{2} \frac{(x_j-\mu)^2}{\sigma^2} \bigr )<br>\\ &amp;= (2 \pi \sigma^2)^{-\frac{N}{2}}\ exp \bigl ( -\frac{1}{2\sigma^2} \sum_{j=1}^N (x_j-\mu)^2 \bigr )<br>\end{aligned}<br>$$</p>
+<p>得到对数似然函数：</p>
+<p>$$<br>\begin{aligned}<br>\mathcal L(\mu, \sigma^2; x_1, x_2, \cdots, x_n) &amp;= -\frac{N}{2}ln(2\pi) - \frac{N}{2}ln(\sigma^2) -\frac{1}{2\sigma^2} \sum_{j=1}^N (x_j-\mu)^2<br>\end{aligned}<br>$$</p>
+<p>对$\mu$求偏导并令其等于$0$得到：</p>
+<p>$$<br>\begin{aligned}<br>\frac{\partial \mathcal L(\mu, \sigma^2; x_1, x_2, \cdots, x_n)}{\partial \mu} &amp;= \frac{1}{\sigma^2} \sum_{j=1}^N(x_j-\mu) = 0<br>\\ \Rightarrow &amp; \sum_{j=1}^N(x_j-\mu) = 0<br>\\ \Rightarrow &amp; \mu_{ML} = \frac{1}{N} \sum_{j=1}^Nx_j<br>\end{aligned}<br>$$</p>
+<p>同样对$\sigma^2$求偏导并令其等于$0$得到：<br>$$<br>\begin{aligned}<br>\frac{\partial \mathcal L(\mu, \sigma^2; x_1, x_2, \cdots, x_n)}{\partial \sigma^2} &amp;= -\frac{N}{2\sigma^2} - \frac{1}{2} \sum_{j=1}^N (x_j-\mu)^2 \frac{\partial}{\partial \sigma^2} (\frac{1} {\sigma^2})<br>\\ &amp;= -\frac{N}{2\sigma^2} - \frac{1}{2} \sum_{j=1}^N (x_j-\mu)^2 (-\frac{1} {(\sigma^2)^2})<br>\\ &amp;= -\frac{N}{2\sigma^2} + \frac{1}{2} \sum_{j=1}^N (x_j-\mu)^2 (\frac{1} {(\sigma^2)^2})<br>\\ &amp;= \frac{1}{2\sigma^2} \bigl (\frac{1} {\sigma^2} \sum_{j=1}^N (x_j-\mu)^2 - N \bigr )<br>\\ &amp;= 0<br>\\ \Rightarrow &amp; \sigma^2 = \frac{1}{N} \sum_{j=1}^N (x_j-\mu)^2<br>\end{aligned}<br>$$</p>
+<p>(2)<br>要使得后验概率最大：</p>
+<p>$$<br>\begin{aligned}<br>\hat\mu_{MAP} &amp;= \underset{\mu}{\arg \max} \rho(\mu|X)<br>\\ &amp;= \underset{\mu}{\arg \max}\frac{\rho(X|\mu)\rho(\mu)}{\rho(X)}<br>\\ &amp;= \underset{\mu}{\arg \max} \rho(X|\mu)\rho(\mu)<br>\end{aligned}<br>$$</p>
+<p>取对数得到：</p>
+<p>$$<br>\begin{aligned}<br>\mathcal L = \underset{\mu}{\arg \max}\ Pr(\mu|X)&amp;=\underset{\mu}{\arg \max}\ log\ Pr(\mu|X)<br>\\&amp;=\underset{\mu}{\arg \max}\ log\ \prod_{x_i \in X}\ Pr(x_i|\mu) \cdot Pr(\mu)<br>\\ &amp;= \underset{\mu}{\arg \max}\ \sum_{x_i \in X}{log \ Pr(x_i|\mu)} + log \ Pr(\mu)<br>\end{aligned}<br>$$</p>
+<p>其中$Pr(\mu) \sim \mathcal N (\mu_0, \sigma_0^2)$，对目标函数求导：</p>
+<p>$$<br>\begin{aligned}<br>\frac{\partial \mathcal L}{\mu} &amp;= \sum_{i=1}^N { \frac{\partial}{\partial \mu} log Pr(x_i| \mu) } + \frac{\partial}{\partial \mu} log \mathcal N (\mu_0, \sigma_0^2) = 0<br>\\ \Rightarrow &amp; \frac{1}{\sigma^2} \sum_{j=1}^N(x_j-\mu) + (\frac{\mu-\mu_0}{\sigma_0})^2 = 0<br>\\ \Rightarrow &amp; \mu_{MAP} = \frac{\sigma_0^2(\sum_{j=1}^{N}x_j)+\sigma^2\mu_0}{\sigma_0^2N + \sigma^2}<br>\end{aligned}<br>$$</p>
+<p>2-7 证明当$N\rightarrow \infty$时，最大后验估计趋于最大似然估计</p>
+<p>意味着做无数次实验之后，先验知识已经完全不重要了。</p>
+<p>$$<br>\begin{aligned}<br>\lim_{N \rightarrow \infty} \mu_{MAP} &amp;=\lim_{N \rightarrow \infty} \frac{\sigma_0^2(\sum_{j=1}^{N}x_j)+\sigma^2\mu_0}{\sigma_0^2N + \sigma^2}<br>\\ &amp;= \lim_{N \rightarrow \infty} \frac{\sigma_0^2(\sum_{j=1}^{N}x_j)}{\sigma_0^2N + \sigma^2}<br>\\ &amp;= \lim_{N \rightarrow \infty} \frac{\sigma_0^2(\sum_{j=1}^{N}x_j)}{\sigma_0^2N}<br>\\ &amp;= \frac{1}{N}\sum_{j=1}^{N}x_j<br>\\ &amp;= \mu_{ML}<br>\end{aligned}<br>$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/08/Linear-Regression/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -300,7 +440,8 @@
       
         
           
-            <p>线性回归：</p>
+            <a id="more"></a>
+<p>线性回归：</p>
 <p>$$<br>f({\mathbf x}; \theta) = {\bf w}^T{\bf x} + b<br>$$</p>
 <p>的经验风险定义为：</p>
 <p>$$<br>\begin{aligned}<br>\mathcal{R}(\mathbf{w}) &amp; = \sum_{n=1}^{N}\mathcal{L}(y^{(n)}, f(\mathbf{x}^{(n)}; \mathbf{w}))<br>\\ &amp;= \frac{1}{2}\sum_{n=1}^N(y^{(n)}-\mathbf{w}^T\mathbf{x}^{(n)})^2<br>\\ &amp;= \frac{1}{2}\lVert\mathbf{y}-X^T\mathbf{w}\rVert^2<br>\end{aligned}<br>$$<br>其中$\mathbf{y} \in \mathbb{R}^N$是由每个真是标签$y^{(1)}, y^{(2)}, \cdots ,y^{(N)}$组成的列向量，$X \in \mathbb{R}^{(d+1)\times N}$是所有输入$x^{(1)}, x^{(2)}, \cdots, x^{(N)}$组成的矩阵：</p>
@@ -1599,130 +1740,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/07/MAGICHF2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Firepaw">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Firepaw">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/07/MAGICHF2/" itemprop="url">MAGICHF2</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-11-07T17:16:51+08:00">
-                2018-11-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="MAGICHF2-魔术师-vs-大厨-2"><a href="#MAGICHF2-魔术师-vs-大厨-2" class="headerlink" title="MAGICHF2: 魔术师 vs 大厨 2"></a>MAGICHF2: 魔术师 vs 大厨 2</h1><h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>上回，大厨在比特国打败了魔术师，并获得了一枚金币。<br>魔术师还不想这么快认输，所以他给了大厨 N 枚硬币，其中只有一枚是真正的金币，剩下的<br>N − 1 个都是赝品。赝品的重量都相同，且与真品不同。仅凭外观是分辨不出真假的。<br>大厨需要找出真品。公平起见，魔术师给了大厨一个天平。这是一个魔法天平，当两端重量<br>相同时天平保持平衡，但如果重量不同，天平会随机向一边倾斜。大厨最多用天平称重 K 次。要是 K 次称重之后大厨还不能锁定真品，他就得猜了（但大厨自己可以决定怎么猜）。<br>如果大厨以最优策略使用天平，他能选出正确硬币的最小概率最大是多少？我们想知道的是<br>最坏情况下的最好概率。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/11/07/MAGICHF2/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1773,7 +1790,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">34</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
