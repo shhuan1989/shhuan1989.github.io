@@ -81,14 +81,14 @@
 
 <meta name="description" content="假设有$N$个样本$x^{(1)}, x^{(2)}, \cdots ,x^{(N)}$服从正态分布$\mathcal N(\mu,\sigma^2)$，其中$\mu$未知。(1)使用最大似然估计来求解最优参数 $\mu_{ML}$。(2)若参数$\mu$为随机变 量，并服从正态分布$\mathcal N(\mu_0, \sigma_0^2)$，使用最大后验估计来求解最优参数$\mu_{MAP}$">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Firepaw">
+<meta property="og:title" content="最大似然估计高斯分布">
 <meta property="og:url" content="http://yoursite.com/2019/08/08/nndl_2_6/index.html">
 <meta property="og:site_name" content="Firepaw">
 <meta property="og:description" content="假设有$N$个样本$x^{(1)}, x^{(2)}, \cdots ,x^{(N)}$服从正态分布$\mathcal N(\mu,\sigma^2)$，其中$\mu$未知。(1)使用最大似然估计来求解最优参数 $\mu_{ML}$。(2)若参数$\mu$为随机变 量，并服从正态分布$\mathcal N(\mu_0, \sigma_0^2)$，使用最大后验估计来求解最优参数$\mu_{MAP}$">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-08-08T10:13:40.690Z">
+<meta property="og:updated_time" content="2019-08-08T10:16:10.060Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Firepaw">
+<meta name="twitter:title" content="最大似然估计高斯分布">
 <meta name="twitter:description" content="假设有$N$个样本$x^{(1)}, x^{(2)}, \cdots ,x^{(N)}$服从正态分布$\mathcal N(\mu,\sigma^2)$，其中$\mu$未知。(1)使用最大似然估计来求解最优参数 $\mu_{ML}$。(2)若参数$\mu$为随机变 量，并服从正态分布$\mathcal N(\mu_0, \sigma_0^2)$，使用最大后验估计来求解最优参数$\mu_{MAP}$">
 
 
@@ -125,7 +125,7 @@
 
 
 
-  <title> | Firepaw</title>
+  <title>最大似然估计高斯分布 | Firepaw</title>
   
 
 
@@ -249,7 +249,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline"></h1>
+          <h1 class="post-title" itemprop="name headline">最大似然估计高斯分布</h1>
         
 
         <div class="post-meta">
@@ -261,7 +261,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-08T18:13:40+08:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-08T18:31:00+08:00">
                 2019-08-08
               </time>
             
@@ -299,7 +299,7 @@
       
 
       
-        <p>假设有$N$个样本$x^{(1)}, x^{(2)}, \cdots ,x^{(N)}$服从正态分布$\mathcal N(\mu,\sigma^2)$，其<br>中$\mu$未知。(1)使用最大似然估计来求解最优参数 $\mu_{ML}$。(2)若参数$\mu$为随机变 量，并服从正态分布$\mathcal N(\mu_0, \sigma_0^2)$，使用最大后验估计来求解最优参数$\mu_{MAP}$。</p>
+        <p>假设有$N$个样本$x^{(1)}, x^{(2)}, \cdots ,x^{(N)}$服从正态分布$\mathcal N(\mu,\sigma^2)$，其<br>中$\mu$未知。(1)使用最大似然估计来求解最优参数 $\mu_{ML}$。(2)若参数$\mu$为随机变 量，并服从正态分布$\mathcal N(\mu_0, \sigma_0^2)$，使用最大后验估计来求解最优参数$\mu_{MAP}$。<br><a id="more"></a></p>
 <p>(1)</p>
 <p>高斯分布：</p>
 <p>$$<br>f_{\mathbf x}(x_j) = (2 \pi \sigma^2)^{-\frac{1}{2}}\ exp \bigl ( -\frac{1}{2} \frac{(x_j-\mu)^2}{\sigma^2}\bigr )<br>$$</p>
