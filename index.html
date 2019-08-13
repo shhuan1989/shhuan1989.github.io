@@ -300,7 +300,137 @@
       
         
           
-            
+            <p><strong>习题3-1</strong> 证明在两类线性分类中，权重向量w与决策平面正交。</p>
+<p>正交就是垂直，向量$\mathbf w$ 和向量$\mathbf v$正交等价于 $\mathbf w^T \mathbf v = 0$</p>
+<p>如果一个超平面的方程是$\mathbf w^T \mathbf x + b = 0$，那么法向量$\mathbf v$就必须垂直于这个超平面内的任意一个向量。</p>
+<p>假设$\mathbf {x_1}, \mathbf {x_2}$是超平面上的任意两点，那么它们满足</p>
+<p>$\mathbf w^T \mathbf{x_1} + b = 0$, $\mathbf w^T \mathbf{x_2} + b = 0$</p>
+<p>$\mathbf {x_1}$和$\mathbf {x_2}$构成的向量是$\mathbf {x_1} - \mathbf {x_2}$。</p>
+<p>根据上面的式子，我们也知道$\mathbf w^T(\mathbf{x1}−\mathbf{x2}) = 0$。</p>
+<p>所以$\mathbf w$向量就是始终和超平面内任意一个向量垂直的向量，所以法向量$\mathbf v$就等于$\mathbf w$。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">w = np.random.rand(<span class="number">10</span>, <span class="number">1</span>)</span><br><span class="line">b = np.random.rand()</span><br><span class="line">w, b</span><br></pre></td></tr></table></figure>
+<pre><code>(array([[0.01914967],
+        [0.28370511],
+        [0.18520577],
+        [0.39552736],
+        [0.19361916],
+        [0.39455089],
+        [0.23097882],
+        [0.22954742],
+        [0.6859955 ],
+        [0.30240609]]), 0.9271464278990567)
+</code></pre><p>$\mathbf w^T+\mathbf x + b = 0 \Rightarrow \mathbf x = (\mathbf w^T)^{-1}\dot(-b)$</p>
+<p>$\mathbf w$不满秩，没有逆，但是可以求伪逆，伪逆是离原点最近的解。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x1 = -np.linalg.pinv(w.T)*b</span><br><span class="line">x1</span><br></pre></td></tr></table></figure>
+<pre><code>array([[-0.01567261],
+       [-0.23219189],
+       [-0.15157738],
+       [-0.32371023],
+       [-0.15846313],
+       [-0.32291106],
+       [-0.18903928],
+       [-0.18786778],
+       [-0.56143716],
+       [-0.24749727]])
+</code></pre><p>$\mathbf{x_2}$是另一个解</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x2 = np.zeros_like(x1)</span><br><span class="line">x2[<span class="number">-1</span>, <span class="number">0</span>] = -b/w[<span class="number">-1</span>]</span><br><span class="line">x2</span><br></pre></td></tr></table></figure>
+<pre><code>array([[ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [ 0.        ],
+       [-3.06589869]])
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">w.T.dot(x1)+b, w.T.dot(x2)+b</span><br></pre></td></tr></table></figure>
+<pre><code>(array([[0.]]), array([[0.]]))
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">u = x1-x2</span><br><span class="line">w.T.dot(u)</span><br></pre></td></tr></table></figure>
+<pre><code>array([[-1.66533454e-16]])
+</code></pre><p>可以看出$\mathbf w^T \mathbf u = \mathbf w^T (\mathbf{x_1}-\mathbf{x_2}) = 0$</p>
+<p>所以$\mathbf w$和超平面$\mathbf w^T \mathbf x + b = 0$正交。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>习题3-2</strong> 在线性空间中，证明一个点$\mathbf x$到平面$f(\mathbf x; \mathbf w)= \mathbf w^T \mathbf x + b = 0$ 的距离为 $|f (\mathbf x;\mathbf w)|/ \Vert \mathbf w \Vert$。</p>
+<p><a href="https://mathinsight.org/distance_point_plane" target="_blank" rel="noopener">Distance From Point To Plane</a></p>
+<p>由$3-1$知，平面 $f(\mathbf x; \mathbf w)= \mathbf w^T \mathbf x + b = 0$ 的法向量是$\mathbf w$。</p>
+<p>在平面上任意选一点$\mathbf y$，向量$\vec{\mathbf{xy}}$在法向量$\mathbf w$上的投影即是点$\mathbf x$到平面的距离。</p>
+<p>即向量$\vec{\mathbf{xy}}$ 和单位法向量 $\frac{\mathbf w}{\Vert \mathbf w \Vert}$的点积。</p>
+<p>取$\mathbf y = -(\mathbf w^T)^{-1}b$，所以$\vec{\mathbf{yx}}= \mathbf x - \mathbf y = \mathbf x + (\mathbf w^T)^{-1}b$。</p>
+<p>所以距离</p>
+<p>$$<br>\begin{aligned}<br>d &amp;= \vec{\mathbf{yx}} \cdot \frac{\mathbf w}{\Vert \mathbf w \Vert}<br>\\ &amp;= \left \vert \frac{1}{\Vert \mathbf w \Vert} \mathbf w^T (\mathbf x + (\mathbf w^T)^{-1}b) \right \vert<br>\\ &amp;= \frac{\left \vert \mathbf w^T \mathbf x + b \right \vert}{\Vert \mathbf w \Vert}<br>\\ &amp;= \frac{\left \vert f(\mathbf x; \mathbf w)\right \vert }{\Vert \mathbf w \Vert}<br>\end{aligned}<br>$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x = np.random.rand(<span class="number">10</span>, <span class="number">1</span>)</span><br><span class="line">d = w.T.dot(x) / np.sum(np.square(w))</span><br><span class="line">d</span><br></pre></td></tr></table></figure>
+<pre><code>array([[1.38224886]])
+</code></pre><p>$习题3-4$ 在线性分类中，决策区域是凸的。即若点$\mathbf x_1$和$\mathbf x_2$被分为类c，则点<br>$\rho \mathbf x_1 + (1-\rho) \mathbf x_2$ 也会被分为类c，其中$\rho \in (0, 1)$。</p>
+<p>假设$f(\mathbf x; \mathbf w) &gt; 0$时分类为c，那么：</p>
+<p>$$<br>f(\mathbf x_1; \mathbf w) &gt; 0<br>\\ f(\mathbf x_2; \mathbf w) &gt; 0<br>$$</p>
+<p>所以</p>
+<p>$$<br>\begin{aligned}<br>\\ f(\rho \mathbf x_1 + (1-\rho) \mathbf x_2; \mathbf w) &amp;= \mathbf w^T (\rho \mathbf x_1 + (1-\rho) \mathbf x_2) + b<br>\\ &amp;= \rho \mathbf w^T \mathbf x_1 + (1-\rho) \mathbf w^T \mathbf x_2 + b<br>\\ &amp;= \rho (\mathbf w^T + b) + (1-\rho) (\mathbf w^T \mathbf x_2 + b)<br>\\ &amp;= f(\mathbf x_1; \mathbf w) + f(\mathbf x_2; \mathbf w)<br>\\ &amp;&gt; 0<br>\end{aligned}<br>$$<br>即也被分类为c。</p>
+<p><strong>习题3-6</strong>在Logistic回归中，是否可以用$\hat{\mathbf y}=\sigma(\mathbf w^T \mathbf x)$去逼近正确的标签$\mathbf y$， 并用平方损失 $(\mathbf y − \hat{\mathbf y})^2$ 最小化来优化参数$\mathbf w$?</p>
+<p>在逻辑回归中，$y \in {0, 1}$，根据概率论，我们约定$\hat y = P(y=1|x)$。这样我们可以得到：</p>
+<p>$$<br>P(y|x) =<br>\left {<br>\begin{array}{1}<br>\hat y ;\ y=1 \\<br>1- \hat y ;\ y=0<br>\end{array}<br>\right.<br>$$<br>综合起来就有：</p>
+<p>$$<br>P(y|x) = {\hat y}^y(1-\hat y)^{(1-y)}<br>$$</p>
+<p>取自然对数不改变概率函数的单调性，因此最大和概率函数等价于最大化：</p>
+<p>$$<br>log P(y|x) = y log \hat y + (1-y) log (1-\hat y)<br>$$</p>
+<p>使用梯度下降法求解，需要对上式取相反数，从而转化为求最小值：</p>
+<p>$$<br>\mathcal L(w, b)=-\left[y log \hat y + (1-y) log (1-\hat y) \right]<br>$$</p>
+<p>在整个训练集上使用$m$个样本使用以上的损失函数，可以得到最终的成本损失函数。假设所有的样本都是独立同分布的，因此概率分布是所有概率分布的乘积：</p>
+<p>$$<br>P(y|x_1, x_2, \ldots, x_m)=\prod_{i=1}^mP(y|x_i)<br>$$</p>
+<p>同样，对上式取对数，使用极大似然估计求得概率最大时对应的参数。类似地，我们需要最小化函数，因此取相反数，即：</p>
+<p>$$<br>\mathcal R(\mathbf w) = -\sum_{i=1}^m \left( y^{(i)} log {\hat y}^{(i)} + (1-y^{(i)}) log (1-{\hat y}^{(i)}) \right)<br>$$<br>通常我们会给函数额外添加一个缩放系数$\frac{1}{m}$，得到：</p>
+<p>$$<br>\mathcal R(\mathbf w) = -\frac{1}{m} \sum_{i=1}^m \left( y^{(i)} log {\hat y}^{(i)} + (1-y^{(i)}) log (1-{\hat y}^{(i)}) \right)<br>$$</p>
+<p>关于参数$\mathbf w$的偏导数为：</p>
+<p>$$<br>\begin{aligned}<br>\frac{\partial \mathcal R(\mathbf w)}{\partial \mathbf w} &amp;=-\frac{1}{N}\sum_{n=1}^N\left(y^{(n)}\frac{\hat y^{(n)}(1-\hat y^{(n)})}{\hat y^{(n)}} {\mathbf x}^{(n)} - (1-y^{(n)}\frac{\hat y^{(n)}(1-\hat y^{(n)})}{1-\hat y^{(n)}}\mathbf x^{(n)}  \right) \ ;因为\frac{\partial \hat y}{\partial \mathbf w^T \mathbf x}={\hat y}^{(n)}(1-{\hat y}^{(n)}) \<br>&amp;=-\frac{1}{N}\sum_{n=1}^N\left(y^{(n)}(1-{\hat y}^{(n)}) \mathbf x^{(n)}-(1-y^{(n)}){\hat y}^{(n)}\mathbf x^{(n)}\right) \<br>&amp;=-\frac{1}{N}\sum_{n=1}^N\mathbf x^{(n)}\left(y^{n}-{\hat y}^{(n)}\right)<br>\end{aligned}<br>$$</p>
+<p>采用梯度下降法，通过下式迭代更新：</p>
+<p>$$<br>\mathbf w_{t+1} = \mathbf w_t+\alpha\frac{1}{N}\sum_{n=1}^N\mathbf x^{(n)}\left(y^{(n)}-{\hat y}_{\mathbf w_t}^{(n)}\right)<br>$$</p>
+<p>如果使用平方损失:</p>
+<p>$$<br>\begin{aligned}<br>\mathcal L(\mathbf x; \theta) &amp;= \frac{1}{2M} (\mathbf y - \hat{\mathbf y})^2<br>\\ &amp;= \frac{1}{2M} (\mathbf y - \sigma(\mathbf w^T \mathbf x))^2<br>\\ \frac{\partial \mathcal L}{\partial \theta}&amp;= -\frac{1}{M}(\mathbf y - \hat{\mathbf y}) \frac{\partial \sigma(\mathbf w^T \mathbf x)}{\partial \theta}<br>\end{aligned}<br>$$<br>其中$\sigma(x) = \frac{1}{1+e^{-x}}$，它的导数是$\frac{\partial \sigma(x)}{\partial x} = \sigma(x)(1-\sigma(x))$</p>
+<p>所以</p>
+<p>$$<br>\frac{\partial \mathcal L(\mathbf x; \theta)}{\partial \theta} = -\frac{1}{M}(\mathbf y - \hat{\mathbf y}) \mathbf x^T \mathbf w(1-\mathbf w)<br>$$</p>
+<p>并不能收敛，而用$\frac{1}{2N}(1-\mathbf y \mathbf {\hat y})^2$做损失函数是可以的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> cm</span><br><span class="line"><span class="comment"># cmap = cm.get_cmap('Blues')</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># w = np.random.rand(2, 1)</span></span><br><span class="line">w0 = np.array([<span class="number">0.6</span>, <span class="number">0.2</span>])</span><br><span class="line">b0 = <span class="number">0.1</span></span><br><span class="line"></span><br><span class="line">points = np.random.rand(<span class="number">20</span>, <span class="number">2</span>)</span><br><span class="line">x = np.linspace(<span class="number">0</span>, <span class="number">1</span>, <span class="number">20</span>).reshape(<span class="number">-1</span>, <span class="number">1</span>)</span><br><span class="line">x = np.concatenate([x, np.ones_like(x)], axis=<span class="number">1</span>)</span><br><span class="line">x[:, <span class="number">0</span>]</span><br><span class="line">y = x.dot(w0)+b0</span><br><span class="line">plt.plot(x[:,<span class="number">0</span>], y)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">w = (y[<span class="number">1</span>]-y[<span class="number">0</span>]) / (x[<span class="number">1</span>, <span class="number">0</span>] - x[<span class="number">0</span>, <span class="number">0</span>])</span><br><span class="line">b = y[<span class="number">0</span>] - w*x[<span class="number">0</span>, <span class="number">0</span>]</span><br><span class="line">w, b</span><br><span class="line"></span><br><span class="line">cat = [<span class="number">1</span> <span class="keyword">if</span> x &gt; <span class="number">0</span> <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">for</span> x <span class="keyword">in</span> points[:, <span class="number">1</span>] - (w*points[:, <span class="number">0</span>] + b)]</span><br><span class="line"><span class="comment"># colors = ['r' if x &gt; 0 else 'g' for x in cat]</span></span><br><span class="line">plt.scatter(x=points[:, <span class="number">0</span>], y=points[:, <span class="number">1</span>], c=cat)</span><br><span class="line"><span class="comment"># print(cmap(0), cmap(1))</span></span><br><span class="line">print(y)</span><br></pre></td></tr></table></figure>
+<pre><code>[0.3        0.33157895 0.36315789 0.39473684 0.42631579 0.45789474
+ 0.48947368 0.52105263 0.55263158 0.58421053 0.61578947 0.64736842
+ 0.67894737 0.71052632 0.74210526 0.77368421 0.80526316 0.83684211
+ 0.86842105 0.9       ]
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">w = np.random.rand(<span class="number">3</span>, <span class="number">1</span>)</span><br><span class="line">y = np.array([<span class="number">1</span> <span class="keyword">if</span> v == <span class="number">1</span> <span class="keyword">else</span> <span class="number">-1</span> <span class="keyword">for</span> v <span class="keyword">in</span> cat]).reshape(<span class="number">-1</span>, <span class="number">1</span>)</span><br><span class="line">print(y)</span><br><span class="line">print(x.shape, y.shape, w.shape)</span><br><span class="line">alpha = <span class="number">0.01</span></span><br><span class="line">N = len(y)</span><br><span class="line">costs = []</span><br><span class="line">x = np.c_[-points[:, <span class="number">0</span>], [<span class="number">-1</span>]*len(points), points[:, <span class="number">1</span>]]</span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(<span class="number">1000</span>):</span><br><span class="line">    cost = <span class="number">0.0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(y)):</span><br><span class="line">        rand_ind = np.random.randint(<span class="number">0</span>, N)</span><br><span class="line">        xi = x[rand_ind].reshape(<span class="number">1</span>, <span class="number">-1</span>)</span><br><span class="line">        yi = y[rand_ind].reshape(<span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">        yhat = np.sum(np.sign(xi.dot(w)))</span><br><span class="line">        yi = np.sum(yi)</span><br><span class="line">        cost += <span class="number">1.0</span> / <span class="number">2</span> / N * (<span class="number">1</span>-yi*yhat) ** <span class="number">2</span></span><br><span class="line">        a = (<span class="number">1</span>-yi * yhat) * yi</span><br><span class="line">        w = w + <span class="number">1.0</span> / N * alpha * a * (xi.reshape(<span class="number">-1</span>, <span class="number">1</span>))</span><br><span class="line">        w[<span class="number">-1</span>, <span class="number">0</span>] = <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    costs.append(cost)</span><br></pre></td></tr></table></figure>
+<pre><code>[[-1]
+ [-1]
+ [-1]
+ [-1]
+ [-1]
+ [-1]
+ [ 1]
+ [-1]
+ [ 1]
+ [-1]
+ [-1]
+ [-1]
+ [ 1]
+ [ 1]
+ [ 1]
+ [-1]
+ [ 1]
+ [-1]
+ [-1]
+ [-1]]
+(20, 2) (20, 1) (3, 1)
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">plt.plot([i <span class="keyword">for</span> i <span class="keyword">in</span> range(len(costs))], costs)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<img src="/2019/08/13/nndl-3/output_21_0.png">
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yhat = np.sign(x.dot(w))</span><br><span class="line">plt.scatter(x=-x[:, <span class="number">0</span>], y=x[:, <span class="number">2</span>], c=[<span class="number">1</span> <span class="keyword">if</span> v &gt; <span class="number">0</span> <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">for</span> v <span class="keyword">in</span> y.flatten()])</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<img src="/2019/08/13/nndl-3/output_22_0.png">
+<p>线性回归使用MSE作为损失函数的原因和Logistic类似。</p>
+<p>假设$y=\mathbf x \mathbf w + \epsilon$，其中$\epsilon \sim \mathcal N(0, \sigma^2)$是方差为$\sigma^2$的高斯分布且与$\mathbf x$独立，即训练集和拟合的直线之间的差值符合高斯分布。</p>
+<p>用最大似然估计，似然函数为：</p>
+<p>$$<br>\begin{aligned}<br>\mathcal L(y|\mathbf x; \mathbf w, \sigma^2)&amp;=\underset{\mathbf w}{\arg \max} \prod_{i=1}^N P(y_i|\mathbf x_i; \mathbf w, \sigma^2) \<br>&amp;=\underset{\mathbf w}{\arg \max}\prod_{i=1}^N\frac{1}{\sqrt{2\pi\sigma^2}}exp(-\frac{(y_i-\mathbf w^T \mathbf x_i)}{2\sigma^2}) \<br>\end{aligned}<br>$$</p>
+<p>取对数得到：</p>
+<p>$$<br>\begin{aligned}<br>log \mathcal L(y|\mathbf x; \mathbf w, \sigma^2) &amp;= \sum_{i=1}^N (log\frac{1}{\sqrt{2\pi\sigma^2}} -\frac{(y_i-\mathbf w^T \mathbf x_i)}{2\sigma^2}) \<br>&amp;=-\frac{N}{2}log 2 \pi - n log \sigma - \frac{1}{2\sigma^2}\sum_{i=1}^N(y_i-\mathbf w^T \mathbf x_i)^2<br>\end{aligned}<br>$$</p>
+<p>求似然函数的最大值，等价于$\sum_{i=1}^N(y_i-\mathbf w^T \mathbf x_i)^2$的最小值。</p>
+<p>所以使用最小二乘可以得到最佳拟合直线。</p>
+<p>令导数$=0$ 得到:</p>
+<p>$$<br>\begin{aligned}<br>\frac{\partial}{\partial \mathbf w}\mathcal R(\mathbf w) &amp;= \frac{\partial}{\partial \mathbf w}\mathcal -X(\mathbf y - X^T\mathbf w) = 0<br>\\ \Rightarrow \mathbf w^*&amp;=(XX^T)^{-1}\mathbf y<br>\end{aligned}<br>$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
           
         
       
