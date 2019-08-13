@@ -88,7 +88,7 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/2019/08/13/nndl-3/output_21_0.png">
 <meta property="og:image" content="http://yoursite.com/2019/08/13/nndl-3/output_22_0.png">
-<meta property="og:updated_time" content="2019-08-13T10:23:37.585Z">
+<meta property="og:updated_time" content="2019-08-13T10:31:00.109Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="nndl_3">
 <meta name="twitter:description" content="习题3-1 证明在两类线性分类中，权重向量w与决策平面正交。">
@@ -302,7 +302,9 @@
       
 
       
-        <p><strong>习题3-1</strong> 证明在两类线性分类中，权重向量w与决策平面正交。<br><a id="more"></a><br>正交就是垂直，向量$\mathbf w$ 和向量$\mathbf v$正交等价于 $\mathbf w^T \mathbf v = 0$</p>
+        <p><strong>习题3-1</strong> 证明在两类线性分类中，权重向量w与决策平面正交。</p>
+<a id="more"></a>
+<p>正交就是垂直，向量$\mathbf w$ 和向量$\mathbf v$正交等价于 $\mathbf w^T \mathbf v = 0$</p>
 <p>如果一个超平面的方程是$\mathbf w^T \mathbf x + b = 0$，那么法向量$\mathbf v$就必须垂直于这个超平面内的任意一个向量。</p>
 <p>假设$\mathbf {x_1}, \mathbf {x_2}$是超平面上的任意两点，那么它们满足</p>
 <p>$\mathbf w^T \mathbf{x_1} + b = 0$, $\mathbf w^T \mathbf{x_2} + b = 0$</p>
@@ -369,7 +371,7 @@
 <p>$$<br>\begin{aligned}<br>\\ f(\rho \mathbf x_1 + (1-\rho) \mathbf x_2; \mathbf w) &amp;= \mathbf w^T (\rho \mathbf x_1 + (1-\rho) \mathbf x_2) + b<br>\\ &amp;= \rho \mathbf w^T \mathbf x_1 + (1-\rho) \mathbf w^T \mathbf x_2 + b<br>\\ &amp;= \rho (\mathbf w^T + b) + (1-\rho) (\mathbf w^T \mathbf x_2 + b)<br>\\ &amp;= f(\mathbf x_1; \mathbf w) + f(\mathbf x_2; \mathbf w)<br>\\ &amp;&gt; 0<br>\end{aligned}<br>$$<br>即也被分类为c。</p>
 <p><strong>习题3-6</strong>在Logistic回归中，是否可以用$\hat{\mathbf y}=\sigma(\mathbf w^T \mathbf x)$去逼近正确的标签$\mathbf y$， 并用平方损失 $(\mathbf y − \hat{\mathbf y})^2$ 最小化来优化参数$\mathbf w$?</p>
 <p>在逻辑回归中，$y \in {0, 1}$，根据概率论，我们约定$\hat y = P(y=1|x)$。这样我们可以得到：</p>
-<p>$$<br>P(y|x) =<br>\left {<br>\begin{array}{1}<br>\hat y ;\ y=1 \\<br>1- \hat y ;\ y=0<br>\end{array}<br>\right.<br>$$<br>综合起来就有：</p>
+<p>$$<br>P(y|x) =<br>\begin{cases}<br>\hat y ;&amp; \ y=1 \\<br>1- \hat y ; &amp; \ y=0<br>\end{cases}<br>$$<br>综合起来就有：</p>
 <p>$$<br>P(y|x) = {\hat y}^y(1-\hat y)^{(1-y)}<br>$$</p>
 <p>取自然对数不改变概率函数的单调性，因此最大和概率函数等价于最大化：</p>
 <p>$$<br>log P(y|x) = y log \hat y + (1-y) log (1-\hat y)<br>$$</p>
