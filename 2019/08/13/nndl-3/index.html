@@ -79,17 +79,14 @@
 
 
 
-<meta name="description" content="最大似然估计 MLE模型已定，参数未知。找出一组参数，使得模型产生出观测数据的概率最大：">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MLE">
-<meta property="og:url" content="http://yoursite.com/2019/07/23/MLE/index.html">
+<meta property="og:title" content="nndl_3">
+<meta property="og:url" content="http://yoursite.com/2019/08/13/nndl-3/index.html">
 <meta property="og:site_name" content="Firepaw">
-<meta property="og:description" content="最大似然估计 MLE模型已定，参数未知。找出一组参数，使得模型产生出观测数据的概率最大：">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-08-08T09:53:03.617Z">
+<meta property="og:updated_time" content="2019-08-13T10:03:47.918Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MLE">
-<meta name="twitter:description" content="最大似然估计 MLE模型已定，参数未知。找出一组参数，使得模型产生出观测数据的概率最大：">
+<meta name="twitter:title" content="nndl_3">
 
 
 
@@ -119,13 +116,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/07/23/MLE/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/08/13/nndl-3/"/>
 
 
 
 
 
-  <title>MLE | Firepaw</title>
+  <title>nndl_3 | Firepaw</title>
   
 
 
@@ -232,7 +229,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/23/MLE/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/13/nndl-3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Firepaw">
@@ -249,7 +246,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">MLE</h1>
+          <h1 class="post-title" itemprop="name headline">nndl_3</h1>
         
 
         <div class="post-meta">
@@ -261,8 +258,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-07-23T14:31:00+08:00">
-                2019-07-23
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-13T18:03:47+08:00">
+                2019-08-13
               </time>
             
 
@@ -299,37 +296,7 @@
       
 
       
-        <h2 id="最大似然估计-MLE"><a href="#最大似然估计-MLE" class="headerlink" title="最大似然估计 MLE"></a>最大似然估计 MLE</h2><p>模型已定，参数未知。找出一组参数，使得模型产生出观测数据的概率最大：<br><a id="more"></a></p>
-<p>$$<br>\underset{\mu}{\arg \max}\ \rho(X;\mu)<br>$$</p>
-<p>其中$\rho(X;\mu)$就是似然函数，表示参数是$\mu$的情况下出现观测数据$X$的概率。我们假设每个观测数据是独立的，就有：</p>
-<p>$$<br>\rho(x_1, x_2, \ldots, x_n; \mu) = \prod_{i=1}^n{\rho(x_i; \mu)}<br>$$<br>为了求导方便，我们一般对目标函数取对数，最优化似然函数等同于最优化对数似然函数：</p>
-<p>$$<br>\underset{\mu}{\arg \max}\ log\  \rho(X;\mu)<br>$$</p>
-<p>举个抛硬币的例子，记正面朝上为$H$，反面朝上为$T$，抛10次结果如下：</p>
-<p>$$<br>T, T, T, H, T, T, T, H, T, T<br>$$</p>
-<p>求这个硬币正面朝上的概率有多大？<br>最可能得结果显然是0.2。我们知道每次抛硬币都是一次二次分布，设正面朝上的概率是$\mu$，那么似然函数为：</p>
-<p>$$<br>\rho(X;\mu)=\prod_{i=1}^n{\rho(x_i;u)}=\prod_{i=1}^n{\mu^{x_i}(1-\mu)^{1-x_i}}<br>$$</p>
-<p>$x=1$表示正面朝上，$x=0$表示方面朝上。那么有：</p>
-<p>$$<br>\begin{aligned}<br>log\ \rho(X; \mu) &amp;= log\prod_{i=1}^n{\mu^{x_i}(1-\mu)^{1-x_i}}<br>\\&amp;= \sum_{i=1}^n{log{\mu^{x_i}(1-\mu)^{1-x_i}}}<br>\\&amp;= \sum_{i=1}^n{[log\mu^{x_i} + log(1-\mu)^{1-x_i}]}<br>\\&amp;= \sum_{i=1}^n{[x_ilog\mu + (1-x_i)log(1-\mu)]}<br>\end{aligned}<br>$$</p>
-<p>求导：</p>
-<p>$$<br>\begin{aligned}<br>\frac{\partial}{\partial\mu}log\ \rho(X;\mu) &amp;= \sum_{i=1}^n\frac{\partial}{\partial\mu}[x_ilog\mu+(1-x_i)log(1-\mu)]<br>\\&amp;=\sum_{i-1}^nx_i\frac{\partial}{\partial\mu}log\mu+\sum_{i=1}^n(1-x_i)\frac{\partial}{\partial\mu}log(1-\mu)<br>\\&amp;=\frac{1}{\mu}\sum_{i=1}^nx_i-\frac{1}{1-\mu}\sum_{i=1}^n(1-x_i)<br>\end{aligned}<br>$$<br>令导数等于0，得到：</p>
-<p>$$<br>\begin{aligned}<br>&amp;\frac{1}{\mu}\sum_{i=1}^nx_i=\frac{1}{1-\mu}\sum_{i=1}^n(1-x_i) \\<br>&amp;\Rightarrow \hat\mu_{ML} = \frac{1}{n}\sum_{i=1}^nx_i<br>\end{aligned}<br>$$</p>
-<h2 id="最大后验概率MAP"><a href="#最大后验概率MAP" class="headerlink" title="最大后验概率MAP"></a>最大后验概率MAP</h2><p>以上MLE求的是找出一组能够使似然函数最大的参数，即$\underset{\mu}{\arg \max}\ \rho(X;\mu)$。 现在问题稍微复杂一点点，假如这个参数$\mu$有一个先验概率呢？比如说，在上面抛硬币的例子，假如我们的经验告诉我们，硬币一般都是匀称的，也就是$\mu=0.5$的可能性最大，$\mu=0.2$的可能性比较小，那么参数该怎么估计呢？这就是MAP要考虑的问题。 MAP优化的是一个后验概率，即给定了观测值$\mu$后使概率最大：</p>
-<p>$$<br>\hat\mu_{MAP}=\underset{\mu}{\arg \max} \rho(\mu|X)<br>$$<br>上式根据贝叶斯公式展开：</p>
-<p>$$<br>\begin{aligned}<br>\hat\mu_{MAP} &amp;= \underset{\mu}{\arg \max}\frac{\rho(X|\mu)\rho(\mu)}{\rho(X)}<br>\\ &amp;= \underset{\mu}{\arg \max} \rho(X|\mu)\rho(\mu)<br>\end{aligned}<br>$$</p>
-<p>可以看出第一项就是似然函数$\rho(X|\mu) == \rho(X;\mu)$，第二项$\rho(\mu)$就是参数的先验知识。取对数之后得到：</p>
-<p>$$<br>\begin{aligned}<br>\mathcal L = \underset{\mu}{\arg \max}\ Pr(\mu|X)&amp;=\underset{\mu}{\arg \max}\ log\ Pr(\mu|X)<br>\\&amp;=\underset{\mu}{\arg \max}\ log\ {\prod_{x_i \in X}\ Pr(x_i|\mu)} \cdot Pr(\mu)<br>\\ &amp;= \underset{\mu}{\arg \max}\ \sum_{x_i \in X}{log \ Pr(x_i|\mu)} + log \ Pr(\mu)<br>\end{aligned}<br>$$</p>
-<p>回到抛硬币的例子，假设参数$\mu$有一个先验估计，它服从$Beta$分布，即：</p>
-<p>$$<br>Pr(\mu)=Beta(\mu|\alpha, \beta)=\frac{1}{B(\alpha, \beta)}\cdot\mu^{\alpha-1}(1-\mu)^{\beta-1}<br>$$<br>对目标函数求导：</p>
-<p>$$<br>\frac{\partial}{\partial\mu}L=\sum_i\frac{\partial}{\partial\mu}\log\ Pr(x_i|\mu)+\frac{\partial}{\partial\mu}log\ Beta(\mu|\alpha, \beta)<br>$$</p>
-<p>第一项在MLE中已经求出，第二项为：</p>
-<p> $$<br> \begin{aligned}<br> \frac{\partial}{\partial\mu}log\ Beta(\mu|\alpha, \beta) &amp;= \frac{\partial}{\partial\mu}log\ { \frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\cdot\Gamma(\beta)}\cdot\mu^{\alpha-1}(1-\mu)^{\beta-1} }<br> \\ &amp;= \frac{\partial}{\partial\mu}log\ \frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\cdot\Gamma(\beta)}+\frac{\partial}{\partial\mu}log\ \mu^{\alpha-1}(1-\mu)^{\beta-1}<br> \\ &amp;= 0 + \frac{\partial}{\partial\mu}\log\ \mu^{\alpha-1}(1-\mu)^{\beta-1}<br> \\ &amp;= (\alpha-1)\frac{\partial}{\partial\mu}log\ \mu+(\beta-1)\frac{\partial}{\partial\mu}(1-\mu)<br> \\ &amp;= \frac{\alpha-1}{\mu}-\frac{\beta-1}{1-\mu}<br> \end{aligned}<br> $$<br> 令导数为$0$，求解为：</p>
-<p> $$<br> \begin{aligned}<br> &amp; \frac{1}{\mu}\sum_{i=1}^nx_i-\frac{1}{1-\mu}\sum_{i=1}^n(1-x_i) + \frac{\alpha-1}{\mu}-\frac{\beta-1}{1-\mu} = 0<br> \\ \Rightarrow &amp; (1-\mu)\sum_{i=1}^nx_i-\mu\sum_{i=1}^n(1-x_i)+(1-\mu)(\alpha-1)-\mu(\beta-1)= 0<br> \\ \Rightarrow &amp; (1-\mu)n_H-\mu n+\mu n_H+(1-\mu)(\alpha-1)-\mu(\beta-1)= 0<br> \\ \Rightarrow &amp; \mu(-n_H-n+n_H+1-\alpha+1-\beta)+n_H+\alpha-1 = 0<br> \\ \Rightarrow &amp; \mu(n+\alpha+\beta-2)= n_H+\alpha-1<br> \\ \Rightarrow &amp; \hat\mu_{MAP} = \frac{n_H+\alpha-1}{n+\alpha+\beta-2}<br> \end{aligned}<br> $$<br> 其中$n_H$表示正面朝上的次数。MAP于MLE的不同之处在于MAP的结果多了一些先验分布的参数。</p>
-<h2 id="符号"><a href="#符号" class="headerlink" title="符号"></a>符号</h2><p>假设$X$是一随机变量（random variable）， $x$是它的一个实现（realization）。</p>
-<p>$P(x; \theta)$ （密度函数）：参数为$\theta$时  出现的概率。这里的$\theta$是一个参数（parameter），是确定的，但是可能已知也可能未知。</p>
-<p>$P(X|\theta)$ （条件概率）：随机变量$\Theta$为$\theta$时，$x$出现的概率。这里$\theta$是随机变量$\Theta$的一个实现。随机变量$\Theta$是不确定的，服从一个概率分布。</p>
-<p>$P(x, \theta)$ 联合概率）：随机变量$\Theta$为$\theta$且随机变量$X$为$x$的概率。</p>
-<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><p><a href="https://www.cnblogs.com/sylvanas2012/p/5058065.html" target="_blank" rel="noopener">最大似然估计（MLE）和 最大后验概率（MAP）</a></p>
-
+        
       
     </div>
     
@@ -353,8 +320,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/20/可并堆/" rel="next" title="可并堆">
-                <i class="fa fa-chevron-left"></i> 可并堆
+              <a href="/2019/08/08/nndl_2_6/" rel="next" title="最大似然估计高斯分布">
+                <i class="fa fa-chevron-left"></i> 最大似然估计高斯分布
               </a>
             
           </div>
@@ -362,10 +329,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/08/07/nndl-notebook/" rel="prev" title="神经网络与深度学习笔记">
-                神经网络与深度学习笔记 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -417,17 +380,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -478,22 +432,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#最大似然估计-MLE"><span class="nav-number">1.</span> <span class="nav-text">最大似然估计 MLE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最大后验概率MAP"><span class="nav-number">2.</span> <span class="nav-text">最大后验概率MAP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#符号"><span class="nav-number">3.</span> <span class="nav-text">符号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#引用"><span class="nav-number">4.</span> <span class="nav-text">引用</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
