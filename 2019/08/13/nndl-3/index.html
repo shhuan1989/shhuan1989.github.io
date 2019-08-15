@@ -88,7 +88,7 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/2019/08/13/nndl-3/output_21_0.png">
 <meta property="og:image" content="http://yoursite.com/2019/08/13/nndl-3/output_22_0.png">
-<meta property="og:updated_time" content="2019-08-13T10:32:24.254Z">
+<meta property="og:updated_time" content="2019-08-15T14:20:45.297Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="nndl_3">
 <meta name="twitter:description" content="习题3-1 证明在两类线性分类中，权重向量w与决策平面正交。">
@@ -364,7 +364,7 @@
 <p>$$<br>\begin{aligned}<br>d &amp;= \vec{\mathbf{yx}} \cdot \frac{\mathbf w}{\Vert \mathbf w \Vert}<br>\\ &amp;= \left \vert \frac{1}{\Vert \mathbf w \Vert} \mathbf w^T (\mathbf x + (\mathbf w^T)^{-1}b) \right \vert<br>\\ &amp;= \frac{\left \vert \mathbf w^T \mathbf x + b \right \vert}{\Vert \mathbf w \Vert}<br>\\ &amp;= \frac{\left \vert f(\mathbf x; \mathbf w)\right \vert }{\Vert \mathbf w \Vert}<br>\end{aligned}<br>$$</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x = np.random.rand(<span class="number">10</span>, <span class="number">1</span>)</span><br><span class="line">d = w.T.dot(x) / np.sum(np.square(w))</span><br><span class="line">d</span><br></pre></td></tr></table></figure>
 <pre><code>array([[1.38224886]])
-</code></pre><p>$习题3-4$ 在线性分类中，决策区域是凸的。即若点$\mathbf x_1$和$\mathbf x_2$被分为类c，则点<br>$\rho \mathbf x_1 + (1-\rho) \mathbf x_2$ 也会被分为类c，其中$\rho \in (0, 1)$。</p>
+</code></pre><p><strong>习题3-4</strong> 在线性分类中，决策区域是凸的。即若点$\mathbf x_1$和$\mathbf x_2$被分为类c，则点<br>$\rho \mathbf x_1 + (1-\rho) \mathbf x_2$ 也会被分为类c，其中$\rho \in (0, 1)$。</p>
 <p>假设$f(\mathbf x; \mathbf w) &gt; 0$时分类为c，那么：</p>
 <p>$$<br>f(\mathbf x_1; \mathbf w) &gt; 0<br>\\ f(\mathbf x_2; \mathbf w) &gt; 0<br>$$</p>
 <p>所以</p>
@@ -382,8 +382,8 @@
 <p>同样，对上式取对数，使用极大似然估计求得概率最大时对应的参数。类似地，我们需要最小化函数，因此取相反数，即：</p>
 <p>$$<br>\mathcal R(\mathbf w) = -\sum_{i=1}^m \left( y^{(i)} log {\hat y}^{(i)} + (1-y^{(i)}) log (1-{\hat y}^{(i)}) \right)<br>$$<br>通常我们会给函数额外添加一个缩放系数$\frac{1}{m}$，得到：</p>
 <p>$$<br>\mathcal R(\mathbf w) = -\frac{1}{m} \sum_{i=1}^m \left( y^{(i)} log {\hat y}^{(i)} + (1-y^{(i)}) log (1-{\hat y}^{(i)}) \right)<br>$$</p>
-<p>关于参数$\mathbf w$的偏导数为：</p>
-<p>$$<br>\begin{aligned}<br>\frac{\partial \mathcal R(\mathbf w)}{\partial \mathbf w} &amp;=-\frac{1}{N}\sum_{n=1}^N\left(y^{(n)}\frac{\hat y^{(n)}(1-\hat y^{(n)})}{\hat y^{(n)}} {\mathbf x}^{(n)} - (1-y^{(n)}\frac{\hat y^{(n)}(1-\hat y^{(n)})}{1-\hat y^{(n)}}\mathbf x^{(n)}  \right) \ ;因为\frac{\partial \hat y}{\partial \mathbf w^T \mathbf x}={\hat y}^{(n)}(1-{\hat y}^{(n)}) \<br>&amp;=-\frac{1}{N}\sum_{n=1}^N\left(y^{(n)}(1-{\hat y}^{(n)}) \mathbf x^{(n)}-(1-y^{(n)}){\hat y}^{(n)}\mathbf x^{(n)}\right) \<br>&amp;=-\frac{1}{N}\sum_{n=1}^N\mathbf x^{(n)}\left(y^{n}-{\hat y}^{(n)}\right)<br>\end{aligned}<br>$$</p>
+<p>因为$ \frac{\partial \hat y}{\partial \mathbf w^T \mathbf x}={\hat y}^{(n)}(1-{\hat y}^{(n)})$, 所以关于参数$\mathbf w$的偏导数为：</p>
+<p>$$<br>\begin{aligned}<br>\frac{\partial \mathcal R(\mathbf w)}{\partial \mathbf w} &amp;=-\frac{1}{N}\sum_{n=1}^N\left(y^{(n)}\frac{\hat y^{(n)}(1-\hat y^{(n)})}{\hat y^{(n)}} {\mathbf x}^{(n)} - (1-y^{(n)}\frac{\hat y^{(n)}(1-\hat y^{(n)})}{1-\hat y^{(n)}}\mathbf x^{(n)}  \right) \\<br>&amp;=-\frac{1}{N}\sum_{n=1}^N\left(y^{(n)}(1-{\hat y}^{(n)}) \mathbf x^{(n)}-(1-y^{(n)}){\hat y}^{(n)}\mathbf x^{(n)}\right) \\<br>&amp;=-\frac{1}{N}\sum_{n=1}^N\mathbf x^{(n)}\left(y^{n}-{\hat y}^{(n)}\right)<br>\end{aligned}<br>$$</p>
 <p>采用梯度下降法，通过下式迭代更新：</p>
 <p>$$<br>\mathbf w_{t+1} = \mathbf w_t+\alpha\frac{1}{N}\sum_{n=1}^N\mathbf x^{(n)}\left(y^{(n)}-{\hat y}_{\mathbf w_t}^{(n)}\right)<br>$$</p>
 <p>如果使用平方损失:</p>
@@ -537,7 +537,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-count">38</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
