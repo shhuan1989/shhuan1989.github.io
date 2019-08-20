@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="algorithms, codeforces," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -79,18 +79,17 @@
 
 
 
-<meta name="description" content="Trailing Loves (or L’oeufs?)题目描述计算$N!$在$B$进制下末尾有几个0.">
-<meta name="keywords" content="algorithms, codeforces">
+<meta name="description" content="拉格朗日函数原始问题是一个凸二次规划问题：">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Trailing_Zeros_of_B-ary">
-<meta property="og:url" content="http://yoursite.com/2019/02/12/Trailing-Zeros-of-B-ary/index.html">
+<meta property="og:title" content="拉格朗日对偶问题与SVM">
+<meta property="og:url" content="http://yoursite.com/2019/08/20/svm-lagrange/index.html">
 <meta property="og:site_name" content="Firepaw">
-<meta property="og:description" content="Trailing Loves (or L’oeufs?)题目描述计算$N!$在$B$进制下末尾有几个0.">
+<meta property="og:description" content="拉格朗日函数原始问题是一个凸二次规划问题：">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-28T12:00:23.201Z">
+<meta property="og:updated_time" content="2019-08-20T07:09:57.521Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Trailing_Zeros_of_B-ary">
-<meta name="twitter:description" content="Trailing Loves (or L’oeufs?)题目描述计算$N!$在$B$进制下末尾有几个0.">
+<meta name="twitter:title" content="拉格朗日对偶问题与SVM">
+<meta name="twitter:description" content="拉格朗日函数原始问题是一个凸二次规划问题：">
 
 
 
@@ -120,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/02/12/Trailing-Zeros-of-B-ary/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/08/20/svm-lagrange/"/>
 
 
 
 
 
-  <title>Trailing_Zeros_of_B-ary | Firepaw</title>
+  <title>拉格朗日对偶问题与SVM | Firepaw</title>
   
 
 
@@ -233,7 +232,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/12/Trailing-Zeros-of-B-ary/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/20/svm-lagrange/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Firepaw">
@@ -250,7 +249,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Trailing_Zeros_of_B-ary</h1>
+          <h1 class="post-title" itemprop="name headline">拉格朗日对偶问题与SVM</h1>
         
 
         <div class="post-meta">
@@ -262,8 +261,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-12T20:01:56+08:00">
-                2019-02-12
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-20T14:57:25+08:00">
+                2019-08-20
               </time>
             
 
@@ -300,19 +299,47 @@
       
 
       
-        <h1 id="Trailing-Loves-or-L’oeufs"><a href="#Trailing-Loves-or-L’oeufs" class="headerlink" title="Trailing Loves (or L’oeufs?)"></a>Trailing Loves (or L’oeufs?)</h1><h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>计算$N!$在$B$进制下末尾有几个0.<br><a id="more"></a></p>
-<h2 id="输入格式"><a href="#输入格式" class="headerlink" title="输入格式"></a>输入格式</h2><p>两个整数$N$和$B$</p>
-<h2 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式"></a>输出格式</h2><p>输出一个整数表示$N!$在$B$进制下末尾有几个0.</p>
-<h2 id="数据范围"><a href="#数据范围" class="headerlink" title="数据范围"></a>数据范围</h2><ol>
-<li>$1 \leq N \leq 10^{18}$</li>
-<li>$2 \leq B \leq 10^{12}$</li>
+        <h1 id="拉格朗日函数"><a href="#拉格朗日函数" class="headerlink" title="拉格朗日函数"></a>拉格朗日函数</h1><p>原始问题是一个<strong>凸二次规划问题</strong>：<br><a id="more"></a><br>$$<br>\underset {x \in R^N}{\min} f(x) \tag{1} \label{1} \\<br>s.t. c_i(x) \leq 0, i=1, 2, \ldots, k \\<br>h_j(x) = 0, j=1, 2, \ldots l<br>$$</p>
+<p>添加拉格朗日算子后写成：</p>
+<p>$$<br>\mathcal L(x, \alpha, \beta) = f(x)+\sum_{i=1}^k\alpha_i c_i(x)+\sum_{j=1}^l\beta_j h_j(x) \tag{2} \label{2}<br>$$</p>
+<p>将对$x$有限制条件的$f(x)$的最优化问题转换为对$x,\alpha,\beta$的没有限制条件的极值问题。其中$\alpha, \beta$是拉格朗日乘子，且$\alpha_i \geq 0$。</p>
+<p>再定义函数</p>
+<p>$$<br>\theta_p(x)=\underset{\alpha, \beta, \alpha_i \geq 0}{\max} \mathcal L(x, \alpha, \beta) \tag{3} \label{3}<br>$$</p>
+<p>将$(\ref{2})$带入得到：</p>
+<p>$$<br>\theta_p(x)=\underset{\alpha, \beta, \alpha_i \geq 0}{\max} \left(f(x)+\sum_{i=1}^k\alpha_i c_i(x)+\sum_{j=1}^l\beta_j h_j(x)\right) \tag{4}\label{4}<br>$$</p>
+<p>分析可知：</p>
+<ol>
+<li><p>如果有$x$不满足约束条件，即$c_i(x) \gt 0$或者$h_j(x) \neq 0$时，由于$\alpha_i \geq 0$，可以取$\alpha_i = +\infty, \beta_jh_j(x)=+\infty$，则$\theta_p(x) \dashrightarrow +\infty$。</p>
+</li>
+<li><p>如果满足全部原始约束条件，有$\sum_{j=1}^l\beta_j h_j(x)=0$， $\sum_{i=1}^k\alpha_i c_i(x) \leq 0$，所以$\theta_p(x) \leq f(x)$。要使$\theta_p(x)$最大，需要$\sum_{i=1}^k\alpha_i c_i(x) = 0$，此时$\theta_p(x)=f(x)$。这里$\theta_p(x)$把$x$看成常数，所以$f(x)$也是常数，所以$max(f(x))=f(x)$。</p>
+</li>
+<li><p>所以原最小化问题$\underset {x \in R^N}{\min} f(x)$可以变为$\underset {x \in R^N}{\min} \theta_p(x)$即$\underset {x}{\min} \underset {\alpha, \beta,\alpha_i \geq 0}{max} \mathcal L(x, \alpha, \beta)$</p>
+</li>
 </ol>
-<h2 id="样例数据"><a href="#样例数据" class="headerlink" title="样例数据"></a>样例数据</h2><h3 id="输入"><a href="#输入" class="headerlink" title="输入"></a>输入</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">38 11</span><br></pre></td></tr></table></figure>
-<h3 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3</span><br></pre></td></tr></table></figure>
-<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>设$S=N!=\sum{a_iB^i}$ 末尾有$K$个0,那么$S \mod B^K = 0$, 问题变成了求$K$的最大值.</p>
-<p>可以对$B$进行质因数分解得到集合$Y$,然后计算$S / y, y \in Y$.</p>
-<p>而$S/y = \sum_{i=0}^{log_yN}{S/y^i}$.</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">decomp</span><span class="params">(val)</span>:</span></span><br><span class="line">    d = <span class="number">2</span></span><br><span class="line">    ans = collections.defaultdict(int)</span><br><span class="line">    <span class="keyword">while</span> d &lt;= math.sqrt(val):</span><br><span class="line">        <span class="keyword">if</span> val % d == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">while</span> val % d == <span class="number">0</span>:</span><br><span class="line">                ans[d] += <span class="number">1</span></span><br><span class="line">                val //= d</span><br><span class="line">        d += <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> val &gt; <span class="number">1</span>:</span><br><span class="line">        ans[val] += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ans</span><br><span class="line"></span><br><span class="line">N, B = map(int, input().split())</span><br><span class="line"></span><br><span class="line">comps = decomp(B)</span><br><span class="line">ans = float(<span class="string">'inf'</span>)</span><br><span class="line"><span class="keyword">for</span> y <span class="keyword">in</span> comps.keys():</span><br><span class="line">    z = y</span><br><span class="line">    x = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> z &lt;= N:</span><br><span class="line">        x += N // z</span><br><span class="line">        z *= y</span><br><span class="line">    ans = min(ans, x // comps[y])</span><br><span class="line"></span><br><span class="line">print(ans)</span><br></pre></td></tr></table></figure>
+<p>转换为对偶问题，因为最小值的最大值小于等于最大值的最小值即$\max \min \leq \min \max$，所以：</p>
+<p>$$<br>\underset {\alpha, \beta,\alpha_i \geq 0}{max} \underset {x}{\min} \mathcal L(x, \alpha, \beta) \leq \underset {x}{\min} \underset {\alpha, \beta,\alpha_i \geq 0}{max} \mathcal L(x, \alpha, \beta) \tag{5}\label{5}<br>$$</p>
+<p>可以看出对偶问题的外层是先求得拉格朗日参数，然后通过拉格朗日参数求得最终超平面参数$x$，而原问题是直接求$x$，因为存在其他未知参数所以无法直接求出。</p>
+<h1 id="SVM优化的问题"><a href="#SVM优化的问题" class="headerlink" title="SVM优化的问题"></a>SVM优化的问题</h1><p>原问题</p>
+<p>$$<br>\underset {\mathbf w, b}{min} \frac{1}{2}\Vert \mathbf w \Vert^2 \tag{6}\label{6} \\<br>subject to \\<br>y_i(\mathbf w \mathbf x_i + b) &gt;= 1,\  \forall j \in {1, 2, \ldots, N}<br>$$</p>
+<p>使用拉格朗日算子得到</p>
+<p>$$<br>\mathcal L(\mathbf w, b, \alpha)=\frac{1}{2}\Vert \mathbf w \Vert^2 + \sum_{i=1}^N\alpha_i \left(1-y_i (\mathbf w^T \mathbf x_i + b)\right) \tag{7}\label{7}<br>$$</p>
+<p>需要求解$\underset{\mathbf w, b}{\min} \underset{\alpha, \alpha_i\geq 0}{\max} \mathcal L(\mathbf w, b, \alpha)$<br>交换$\min, \max$得到对偶问题$\underset{\alpha, \alpha_i\geq 0}{\max} \underset{\mathbf w, b}{\min} \mathcal L(\mathbf w, b, \alpha)$</p>
+<p>把$\mathbf w, b$看成关于$\alpha$的函数，求最小值，求导得到:</p>
+<p>$$<br>\frac{\partial \mathcal L(\mathbf w, b, \alpha)}{\partial \mathbf w}=\mathbf w - \sum_{i=1}^N\alpha_iy_i\mathbf x_i = 0 \tag{8}\label{8}<br>$$</p>
+<p>$$<br>\frac{\partial \mathcal L(\mathbf w, b, \alpha)}{b}=\sum_{i=1}^N\alpha_i = 0 \tag{9}\label{9}<br>$$</p>
+<p>将$(\ref{8}) (\ref{9})$带入$\mathcal L(\mathbf w, b, \alpha)$ 得到：</p>
+<p>$$<br>\begin{aligned}<br>\mathcal L(\mathbf w, b, \alpha) &amp;= \frac{1}{2}\sum_{i=1}^N\sum_{j=1}^N\alpha_i\alpha_jy_iy_j\mathbf x_i^T \mathbf x_j + \sum_{i=1}^N\alpha_i-\sum_{i=1}^N\alpha_iy_i\left((\sum_{j=1}^N\alpha_jy_j\mathbf x_j)\cdot\mathbf x_i+b\right) \\<br>&amp;= \frac{1}{2}\sum_{i=1}^N\sum_{j=1}^N\alpha_i\alpha_jy_iy_j\mathbf x_i^T \mathbf x_j +\sum_{i=1}^N\alpha_i-\sum_{i=1}^N\sum_{j=1}^N\alpha_i\alpha_jy_iy_j\mathbf x_i^T \mathbf x_j-b\sum_{i=1}^N\alpha_iy_i \\<br>&amp;=-\frac{1}{2}\sum_{i=1}^N\sum_{j=1}^N\alpha_i\alpha_jy_iy_j\mathbf x_i^T \mathbf x_j +\sum_{i=1}^N\alpha_i + b*0 \\<br>&amp;=-\frac{1}{2}\sum_{i=1}^N\sum_{j=1}^N\alpha_i\alpha_jy_iy_j\mathbf x_i^T \mathbf x_j +\sum_{i=1}^N\alpha_i<br>\end{aligned}<br>$$</p>
+<p>此时再求$\underset{\alpha, \alpha_i\geq 0}{\max} \underset{\mathbf w, b}{\min} \mathcal L(\mathbf w, b, \alpha)$，即</p>
+<p>$$<br>\underset{\alpha, \alpha_i\geq 0}{\max} \underset{\mathbf w, b}{\min} \mathcal L(\mathbf w, b, \alpha) = \underset {\alpha}{\max} { -\frac{1}{2}\sum_{i=1}^N\sum_{j=1}^N\alpha_i\alpha_jy_iy_j\mathbf x_i^T \mathbf x_j +\sum_{i=1}^N\alpha_i }<br>$$</p>
+<p>解出$\alpha$之后，求出$\mathbf w, b$，得到：</p>
+<p>$$<br>\begin{aligned}<br>f(\mathbf x_{test})&amp;=\mathbf w^T\mathbf x+b \\<br>&amp;=\sum_{i=1}^N\alpha_iy_i\mathbf x_i^T\mathbf x_{test}+b<br>\end{aligned}<br>$$</p>
+<p>KKT条件为：</p>
+<p>$$<br>\begin{cases}<br>\alpha_i \geq 0 \\<br>1-y_i f(\mathbf x_i) \leq 0 \\<br>\alpha_i(1-y_i f(\mathbf x_i)) = 0<br>\end{cases}<br>$$</p>
+<p>所以对任意样本，总有$\alpha_i=0$或者$1-y_i f(\mathbf x_i)=0$。</p>
+<ul>
+<li>若$\alpha_i=0$，则该样本不会在$\sum_{i=1}^N\alpha_iy_i\mathbf x_i^T\mathbf x_{test}+b$中出现，就不会对$f(\mathbf x)$有任何影响。</li>
+<li>若$\alpha_i \gt 0$，则必有$y_i f(\mathbf x_i)=1$，对应的点在最大间隔的边界上，是一个支持向量。所以训练完成后，大部分样本都不需要保留，最终模型只与支持向量有关。</li>
+</ul>
 
       
     </div>
@@ -328,12 +355,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/algorithms-codeforces/" rel="tag"># algorithms, codeforces</a>
-          
-        </div>
-      
 
       
       
@@ -343,8 +364,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/12/28/varnish-Cache/" rel="next" title="varnish Cache">
-                <i class="fa fa-chevron-left"></i> varnish Cache
+              <a href="/2019/08/15/nndl-smo/" rel="next" title="SMO算法">
+                <i class="fa fa-chevron-left"></i> SMO算法
               </a>
             
           </div>
@@ -352,10 +373,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/02/20/Fenwick-Tree/" rel="prev" title="Fenwick Tree">
-                Fenwick Tree <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -478,7 +495,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Trailing-Loves-or-L’oeufs"><span class="nav-number">1.</span> <span class="nav-text">Trailing Loves (or L’oeufs?)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#题目描述"><span class="nav-number">1.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#输入格式"><span class="nav-number">1.2.</span> <span class="nav-text">输入格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#输出格式"><span class="nav-number">1.3.</span> <span class="nav-text">输出格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据范围"><span class="nav-number">1.4.</span> <span class="nav-text">数据范围</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#样例数据"><span class="nav-number">1.5.</span> <span class="nav-text">样例数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#输入"><span class="nav-number">1.5.1.</span> <span class="nav-text">输入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输出"><span class="nav-number">1.5.2.</span> <span class="nav-text">输出</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析"><span class="nav-number">1.6.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码"><span class="nav-number">1.7.</span> <span class="nav-text">代码</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#拉格朗日函数"><span class="nav-number">1.</span> <span class="nav-text">拉格朗日函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SVM优化的问题"><span class="nav-number">2.</span> <span class="nav-text">SVM优化的问题</span></a></li></ol></div>
             
 
           </div>
