@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="使用EM算法解GMM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Expectation Maximization Algorithm">
+<meta property="og:url" content="http://yoursite.com/2019/11/20/Expectation-Maximization-Algorithm/index.html">
+<meta property="og:site_name" content="Firepaw">
+<meta property="og:description" content="使用EM算法解GMM">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2019/11/20/Expectation-Maximization-Algorithm/output_2_1.png">
+<meta property="og:image" content="http://yoursite.com/2019/11/20/Expectation-Maximization-Algorithm/output_6_1.png">
+<meta property="og:image" content="http://yoursite.com/2019/11/20/Expectation-Maximization-Algorithm/output_8_0.png">
+<meta property="og:image" content="http://yoursite.com/2019/11/20/Expectation-Maximization-Algorithm/output_11_1.png">
+<meta property="og:image" content="http://yoursite.com/2019/11/20/Expectation-Maximization-Algorithm/output_12_1.png">
+<meta property="og:image" content="http://yoursite.com/2019/11/20/Expectation-Maximization-Algorithm/output_12_2.png">
+<meta property="og:updated_time" content="2019-11-20T09:20:20.569Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Expectation Maximization Algorithm">
+<meta name="twitter:description" content="使用EM算法解GMM">
+<meta name="twitter:image" content="http://yoursite.com/2019/11/20/Expectation-Maximization-Algorithm/output_2_1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/11/20/Expectation-Maximization-Algorithm/"/>
+
+
+
+
+
+  <title>Expectation Maximization Algorithm | Firepaw</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Firepaw</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/20/Expectation-Maximization-Algorithm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Firepaw">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Firepaw">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Expectation Maximization Algorithm</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-11-20T17:15:37+08:00">
+                2019-11-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>使用EM算法解GMM</p>
+<a id="more"></a>
+<h2 id="Jensen-不等式"><a href="#Jensen-不等式" class="headerlink" title="Jensen 不等式"></a>Jensen 不等式</h2><p>Jensen不等式在优化理论中大量用到，首先来回顾下凸函数和凹函数的定义。假设f是定义域为实数的函数，如果对于所有的$x$，$f(x)$的二阶导数大于等于0，那么$f$是凸函数。当$x$是向量时，如果hessian矩阵$H$是半正定（即$H&gt;=0$），那么$f$是凸函数。如果，$f(x)$的二阶导数小于0或者$H&gt;0$，那么$f$就是凹函数。</p>
+<p>Jensen不等式描述如下：</p>
+<ol>
+<li>如果$f$是凸函数，$X$是随机变量，则$E[f(X)]&gt;=f(E[X])$，当$f$是严格凸函数时，则$E[f(X)]&gt;f(E[X])$；</li>
+<li>如果$f$是凹函数，$X$是随机变量，则$f(E[X])&lt;=E[f(X)]$，当$f$是（严格）凹函数当且仅当$−f$是（严格）凸函</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">%matplotlib inline</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">x = np.arange(<span class="number">0</span>, <span class="number">10</span>, <span class="number">0.01</span>)</span><br><span class="line">y = x**<span class="number">2</span> - <span class="number">12</span>*x + <span class="number">45</span></span><br><span class="line"></span><br><span class="line">a = [<span class="number">1</span>, <span class="number">34</span>]</span><br><span class="line">b = [<span class="number">8</span>, <span class="number">8</span>**<span class="number">2</span><span class="number">-12</span>*<span class="number">8</span>+<span class="number">45</span>]</span><br><span class="line">plt.xticks([], [])</span><br><span class="line">plt.yticks([], [])</span><br><span class="line">plt.ylim(<span class="number">0</span>, <span class="number">60</span>)</span><br><span class="line">plt.xlim(<span class="number">0</span>, <span class="number">10</span>)</span><br><span class="line">plt.plot(x, y, <span class="string">'k-'</span>)</span><br><span class="line">plt.scatter([a[<span class="number">0</span>]], [a[<span class="number">1</span>]], c=<span class="string">'y'</span>, s=<span class="number">50</span>)</span><br><span class="line">plt.scatter([b[<span class="number">0</span>]], [b[<span class="number">1</span>]], c=<span class="string">'y'</span>, s=<span class="number">50</span>)</span><br><span class="line"></span><br><span class="line">plt.plot([<span class="number">0</span>, a[<span class="number">0</span>]], [a[<span class="number">1</span>], a[<span class="number">1</span>]], <span class="string">'c--'</span>)</span><br><span class="line">plt.plot([<span class="number">0</span>, b[<span class="number">0</span>]], [b[<span class="number">1</span>], b[<span class="number">1</span>]], <span class="string">'c--'</span>)</span><br><span class="line">plt.plot([a[<span class="number">0</span>], b[<span class="number">0</span>]], [a[<span class="number">1</span>], b[<span class="number">1</span>]], <span class="string">'c--'</span>)</span><br><span class="line">plt.plot([a[<span class="number">0</span>], a[<span class="number">0</span>]], [a[<span class="number">1</span>], <span class="number">0</span>], <span class="string">'c--'</span>)</span><br><span class="line">plt.plot([b[<span class="number">0</span>], b[<span class="number">0</span>]], [b[<span class="number">1</span>], <span class="number">0</span>], <span class="string">'c--'</span>)</span><br><span class="line"></span><br><span class="line">cx, cy = (a[<span class="number">0</span>]+b[<span class="number">0</span>])/<span class="number">2</span>, (a[<span class="number">1</span>]+b[<span class="number">1</span>])/<span class="number">2</span></span><br><span class="line">c = [cx, cy]</span><br><span class="line">plt.scatter([cx], [cy], c=<span class="string">'r'</span>, s=<span class="number">50</span>)</span><br><span class="line">plt.plot([cx, cx], [cy, <span class="number">0</span>], <span class="string">'c--'</span>)</span><br><span class="line">plt.plot([<span class="number">0</span>, cx], [cy, cy], <span class="string">'c--'</span>)</span><br><span class="line"></span><br><span class="line">dx, dy = cx, cx**<span class="number">2</span><span class="number">-12</span>*cx+<span class="number">45</span></span><br><span class="line">d = [dx, dy]</span><br><span class="line">plt.scatter([dx], [dy], c=<span class="string">'g'</span>, s=<span class="number">50</span>)</span><br><span class="line">plt.plot([<span class="number">0</span>, dx], [dy, dy], <span class="string">'c--'</span>)</span><br><span class="line"></span><br><span class="line">plt.text(<span class="number">-0.7</span>, a[<span class="number">1</span>], <span class="string">u'$f(a)$'</span>)</span><br><span class="line">plt.text(<span class="number">-1</span>, c[<span class="number">1</span>], <span class="string">u'$E[f(X)]$'</span>)</span><br><span class="line">plt.text(<span class="number">-0.7</span>, b[<span class="number">1</span>]+<span class="number">1</span>, <span class="string">u'$f(b)$'</span>)</span><br><span class="line">plt.text(<span class="number">-1</span>, d[<span class="number">1</span>]<span class="number">-1</span>, <span class="string">u'$f(E[X])$'</span>)</span><br><span class="line">plt.text(a[<span class="number">0</span>]<span class="number">-0.1</span>, <span class="number">-3</span>, <span class="string">u'$a$'</span>)</span><br><span class="line">plt.text(d[<span class="number">0</span>]<span class="number">-0.1</span>, <span class="number">-3</span>, <span class="string">u'$E[X]$'</span>)</span><br><span class="line">plt.text(b[<span class="number">0</span>]<span class="number">-0.1</span>, <span class="number">-3</span>, <span class="string">u'$b$'</span>)</span><br><span class="line">plt.text(b[<span class="number">0</span>]+<span class="number">1</span>, b[<span class="number">1</span>]+<span class="number">10</span>, <span class="string">u'$f$'</span>)</span><br><span class="line">plt.text(c[<span class="number">0</span>], c[<span class="number">1</span>]+<span class="number">5</span>, <span class="string">u'$E[f(X)] &gt;= f(E[X])$'</span>)</span><br><span class="line">plt.text(a[<span class="number">0</span>], a[<span class="number">1</span>]+<span class="number">5</span>, <span class="string">u'$f$ is convex'</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>Text(1, 39, &apos;$f$ is convex&apos;)
+</code></pre><img src="/2019/11/20/Expectation-Maximization-Algorithm/output_2_1.png">
+<h2 id="EM思想"><a href="#EM思想" class="headerlink" title="EM思想"></a>EM思想</h2><p>极大似然函数法估计参数的一般步骤：</p>
+<ol>
+<li>写出似然函数</li>
+<li>取对数</li>
+<li>求导数，并令导数为0</li>
+<li>解似然方程</li>
+</ol>
+<p>给定$n$个训练样本$x_1, x_2, \cdots, x_n$，假设样本之间相互独立，要拟合模型$p(x, z)$。根据分布我们可以得到如下的似然函数：</p>
+<p>$$<br>\begin{aligned}<br>\mathcal L(\theta) &amp;= \sum_{i=1}^n\log p(x; \theta) \\<br>&amp;= \sum_{i=1}^n\log \sum_z p(x, z; \theta)<br>\end{aligned}<br>$$</p>
+<p>需要对每个样本实例的每个可能的类别$z$求联合概率分布之和，即$\sum_z p(x, z; \theta)$。</p>
+<p>如果$z$是已知的，那么使用极大似然估计参数$\theta$会很容易。</p>
+<p>然而上式存在一个不确定的隐含变量(latent random variable)$z$，这种情况下EM算法就派上用场了。</p>
+<p>由于不能直接最大化$\mathcal L(\theta)$，所以只能不断地建立$\mathcal L$的下界(E-step)，再优化下界。一直迭代直到算法收敛到局部最优解。</p>
+<p><strong>EM算法通过引入隐含变量，使用MLE(极大似然估计)进行迭代求解参数</strong>。通常引入隐含变量后会有两个参数，EM算法首先会固定其中一个参数，然后使用MLE计算第二个参数；然后固定第二个参数，再使用MLE估计第一个参数的值。依次迭代，直到收敛到局部最优解。</p>
+<p>= E-Step: 通过Observed data 和现有模型估计参数估计值 Missing Data<br>= M-Step: 假设Missing Data已知的情况下，最大化似然函数。</p>
+<p><strong>由于算法保证了每次迭代之后，似然函数都会增加，所以函数最终会收敛</strong></p>
+<h2 id="EM推导"><a href="#EM推导" class="headerlink" title="EM推导"></a>EM推导</h2><p>对于每个实例$i$，用$Q_i$表示样本实例 隐含变量 $z$ 的某种分布，且$Q_i$满足条件$\sum_z Q_i(z)=1, Q_i(z) \geq 0$，如果$Q_i$是连续的，则$Q_i$表示概率密度函数，求和换成积分。</p>
+<p>$$<br>\begin{aligned}<br>\sum_i\log p(x_i; \theta) &amp;= \sum_i \log \sum_{z_i} p(x_i, z_i; \theta) \\<br>&amp;= \sum_i \log \sum_{z_i}Q_i(z_i)\frac{p(x_i, z_i; \theta)}{Q_i(z_i)} \\<br>&amp;\geq \sum_i \sum_{z_i} Q_i(z_i)\log \frac{p(x_i, z_i; \theta)}{Q_i(z_i)}<br>\end{aligned}<br>$$</p>
+<p>上式最后的变换用到了Jensen不等式：</p>
+<p>由于$\log$函数的二阶导数为$-\frac{1}{x^2} \lt 0$，为凹函数，所以使用$f(E[X]) \geq E[f(x)]$；</p>
+<p>把所以上式写成$\mathcal L(\theta) \geq J(z, Q)$，那么我们可以通过不断的优化$J$的下界，来使得$L(\theta)$不断提高，最终达到它的最大值。</p>
+<p>在Jensen不等式中，当$X=E(X)$，即为常数时，等号成立。在这里即为：</p>
+<p>$$<br>\frac{p(x_i, z_i; \theta)}{Q_i(z_i)} = c<br>$$</p>
+<p>变换并对$z$求和得到：</p>
+<p>$$<br>\sum_z p(x_i, z_i; \theta) = \sum_z Q_i(z_i)c<br>$$</p>
+<p>因为$\sum_z Q_i(z)=1$，概率之和为1，所以：</p>
+<p>$$<br>\sum_z p(x_i, z_i; \theta) = c<br>$$</p>
+<p>因此：</p>
+<p>$$<br>\begin{aligned}<br>Q_i(z_i) &amp;= \frac{p(x_i, z_i; \theta)}{\sum_z p(x_i, z; \theta)} \\<br>&amp;= \frac{p(x_i, z_i; \theta)}{p(x_i; \theta)} \\<br>&amp;= p(z_i|x_i; \theta)<br>\end{aligned}<br>$$</p>
+<p>可以看出，固定了参数$\theta$之后，使下界拉升的$Q(z)$的计算公式就是后验概率，一并解决了$Q(z)$如何选择的问题。</p>
+<p>EM完整的流程如下：</p>
+<ol>
+<li>初始化参数分布$\theta$</li>
+<li><p>重复E-Step和M-Step直到收敛</p>
+<ol>
+<li><p>E-Step: 根据参数的初始值或者上一次迭代的模型参数来计算出隐含变量的后验概率，其实就是隐含变量的期望值，作为隐含变量的当前估计值: $Q_i(z_i) := p(z_i|x_i; \theta)$</p>
+</li>
+<li><p>M-Step: 最大化似然函数从而获得新的参数值: $\theta := \arg \underset{\theta}{\max} \sum_i \sum_{z_i} Q_i(z_i)\log \frac{p(x_i, z_i; \theta)}{Q_i(z_i)}$</p>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="多维高斯分布"><a href="#多维高斯分布" class="headerlink" title="多维高斯分布"></a>多维高斯分布</h2><p>一元高斯分布的概率密度函数为：</p>
+<p>$$<br>f(x) = \frac{1}{\sqrt{2\pi} \sigma} e^{-\frac{(x-\mu)^2}{2\sigma^2}}<br>$$</p>
+<p>因为$x, \mu$是标量，所以$(x-\mu)^T$等价于$(x-\mu)$，所以上式等价于</p>
+<p>$$<br>f(x) = \frac{1}{(2\pi)^{\frac{1}{2}} (\sigma^2)^{\frac{1}{2}}} e^{-\frac{1}{2}(x-\mu)^T(\sigma^2)^{-1}(x-\mu)}<br>$$</p>
+<p>推广到多维得到多元高斯分布，得到K维随机变量$\mathbf x=[x_1, x_2, \dots, x_K]^T$的概率密度函数：</p>
+<p>$$<br>f_{\mathbf \mu, \Sigma}(\mathbf x) = f_{\mu, \Sigma}(x_1, x_2, \cdots, x_K) = \frac{1}{(2\pi)^{\frac{K}{2}}} \cdot \frac{1}{\vert\Sigma\vert^{\frac{1}{2}}} \cdot e^{-\frac{1}{2}(\mathbf x - \mathbf \mu)^T \Sigma^{-1} (\mathbf x - \mathbf \mu)}<br>$$</p>
+<p>$\mathbf x$和$\mathbf \mu$都是K维向量，协方差阵$\Sigma$是$K\times K$的正定矩阵，称$\mathbf x$服从K元正太分布，简记为：$\mathbf x \sim N_K(\mathbf \mu, \Sigma)$</p>
+<h3 id="多元高斯分布的极大似然估计"><a href="#多元高斯分布的极大似然估计" class="headerlink" title="多元高斯分布的极大似然估计"></a>多元高斯分布的极大似然估计</h3><p>对于$N$个样本$\mathbf x_1, \mathbf x_2, \cdots, \mathbf x_N$，其似然函数为：</p>
+<p>$$<br>\begin{aligned}<br>\mathcal L(\mathbf \mu, \Sigma) = \prod_{i=1}^N f_{\mathbf \mu, \Sigma}(\mathbf x_i) = (2\pi)^{-\frac{KN}{2}}\cdot\vert\Sigma\vert^{-\frac{N}{2}}\cdot e^{-\frac{1}{2}\Sigma_{i=1}^N(\mathbf x_i-\mathbf \mu)^T \Sigma^{-1} (\mathbf x_i - \mathbf \mu)}<br>\end{aligned}<br>$$</p>
+<p>对数似然函数为：</p>
+<p>$$<br>ln \mathcal L(\mathbf \mu, \Sigma) =-\frac{KN}{2} ln(2\pi) - \frac{N}{2} ln \vert\Sigma\vert -\frac{1}{2}\sum_{i=1}^N(\mathbf x_i-\mathbf \mu)^T {\Sigma}^{-1} (\mathbf x_i - \mathbf \mu)<br>$$</p>
+<p>分别对$\mathbf \mu$和$\Sigma$求偏导，参考<a href="https://blog.csdn.net/Joyliness/article/details/80097491" target="_blank" rel="noopener">多元正态分布的极大似然估计</a>得到：</p>
+<p>$$<br>\mathbf {\hat \mu} = \overline{\mathbf x} \\<br>\hat \Sigma = \frac{1}{N} \Sigma_{i=1}{N}(\mathbf x_i-\overline{x})^T(\mathbf x_i-\overline{x})<br>$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mean = [<span class="number">3</span>, <span class="number">4</span>]</span><br><span class="line">cov = [[<span class="number">1.5</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">3.3</span>]]</span><br><span class="line">x = np.random.multivariate_normal(mean, cov, <span class="number">500</span>)</span><br><span class="line">plt.scatter(x[:, <span class="number">0</span>], x[:, <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">mu_hat = np.mean(x, axis=<span class="number">0</span>)</span><br><span class="line">print(mu_hat)</span><br><span class="line">sigma_hat = ((x-mu_hat).T @ (x-mu_hat)) / <span class="number">500</span></span><br><span class="line">print(sigma_hat)</span><br></pre></td></tr></table></figure>
+<pre><code>[2.89991371 4.08421214]
+[[ 1.43340175 -0.01134683]
+ [-0.01134683  3.28850441]]
+</code></pre><img src="/2019/11/20/Expectation-Maximization-Algorithm/output_6_1.png">
+<h2 id="高斯混合模型"><a href="#高斯混合模型" class="headerlink" title="高斯混合模型"></a>高斯混合模型</h2><p>生成一维的高斯分布$N(\mu, \sigma)$:</p>
+<p>sigma * np.random.randn(…) + mu</p>
+<p>生成二维分布需要乘以协方差矩阵（协方差矩阵是正定的，所以可以分解(Cholesky)成下三角矩阵), $A = L @ L.T$</p>
+<p><a href="https://blog.csdn.net/lin_limin/article/details/81024228" target="_blank" rel="noopener">二维高斯分布的参数分析</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scipy.stats <span class="keyword">import</span> multivariate_normal</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gen_gaussian</span><span class="params">(conv, mean, num=<span class="number">1000</span>)</span>:</span></span><br><span class="line">    points = np.random.randn(num, <span class="number">2</span>)</span><br><span class="line">    points = points @ conv + mean</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> points</span><br><span class="line"></span><br><span class="line">fig = plt.figure(figsize=(<span class="number">10</span>, <span class="number">6</span>))</span><br><span class="line">ax = fig.add_subplot(<span class="number">111</span>)</span><br><span class="line"></span><br><span class="line">conv, mean = np.array([[<span class="number">1</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">5</span>]]), np.array([<span class="number">2</span>, <span class="number">4</span>])</span><br><span class="line">points1 = gen_gaussian(conv, mean)</span><br><span class="line">plt.scatter(points1[:, <span class="number">0</span>], points1[:, <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">conv, mean = np.array([[<span class="number">2</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">3</span>]]), np.array([<span class="number">10</span>, <span class="number">15</span>])</span><br><span class="line">points2 = gen_gaussian(conv, mean)</span><br><span class="line">plt.scatter(points2[:, <span class="number">0</span>], points2[:, <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">points = np.append(points1, points2, axis=<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">K = <span class="number">2</span></span><br><span class="line"><span class="comment"># mu = np.random.randint(min(points[:, 0]), max(points[:, 1]), size=(K, 2))</span></span><br><span class="line"><span class="comment"># cov = np.zeros((K, 2, 2))</span></span><br><span class="line">X = points</span><br><span class="line">mu = np.array([[<span class="number">2</span>, <span class="number">4</span>], [<span class="number">10</span>, <span class="number">15</span>]])</span><br><span class="line">cov = np.array([[[<span class="number">1</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">5</span>]], [[<span class="number">2</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">3</span>]]])</span><br><span class="line"><span class="comment"># for dim in range(len(cov)):</span></span><br><span class="line"><span class="comment">#     np.fill_diagonal(cov[dim], 5)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># for i, X in enumerate([points1, points2]):</span></span><br><span class="line">x, y = np.meshgrid(np.sort(X[:, <span class="number">0</span>]), np.sort(X[:, <span class="number">1</span>]))</span><br><span class="line">XY = np.array([x.flatten(), y.flatten()]).T</span><br><span class="line">reg_cov = <span class="number">1e-6</span> * np.identity(<span class="number">2</span>)    </span><br><span class="line"><span class="keyword">for</span> m, c <span class="keyword">in</span> zip(mu, cov):</span><br><span class="line"><span class="comment">#     m = mu[i]</span></span><br><span class="line"><span class="comment">#     c = cov[i]</span></span><br><span class="line">    c = c + reg_cov</span><br><span class="line">    mng = multivariate_normal(mean=m, cov=c)</span><br><span class="line">    ax.contour(np.sort(X[:, <span class="number">0</span>]), np.sort(X[:, <span class="number">1</span>]), mng.pdf(XY).reshape(len(X), len(X)), colors=<span class="string">'black'</span>, alpha=<span class="number">0.3</span>)</span><br></pre></td></tr></table></figure>
+<img src="/2019/11/20/Expectation-Maximization-Algorithm/output_8_0.png">
+<ol>
+<li>定义分量数目$K$，对每个分量设置$\mathbf \pi_k, \mathbf \mu_k, \mathbf \Sigma_k$，然后计算下式的对数似然函数</li>
+</ol>
+<p>$$<br>p(\mathbf x|\mathbf \pi, \mathbf \mu, \mathbf \Sigma) = \sum_{k=1}^K\pi_k \mathcal N(\mathbf x| \mathbf \mu_k, \mathbf \Sigma_k)<br>$$</p>
+<ol start="2">
+<li>E-Step，根据当前的$\mathbf \pi_k, \mathbf \mu_k, \mathbf \Sigma_k$计算后验概率$\gamma(z_{nk})$，$\mathbf \pi_k$是先验概率，$\gamma(z_{nk})$表示点$\mathbf x_n$属于聚类$k$的后验概率。</li>
+</ol>
+<p>$$<br>\gamma(z_{nk}) = \frac{\mathbf \pi_k \mathcal N(\mathbf x_n|\mathbf \mu_n, \Sigma_n) }{\sum_{i=1}^K\mathbf \pi_i \mathcal N(\mathbf x_n|\mathbf \mu_i, \Sigma_i) }<br>$$</p>
+<ol start="3">
+<li>M-Step，更新$\mathbf \pi_k, \mathbf \mu_k, \mathbf \Sigma_k$</li>
+</ol>
+<p>$$<br>\mathbf \mu_k^{new} = \frac{1}{N_k}\sum_{n=1}^N \gamma(z_{nk})\mathbf x_n \\<br>\Sigma_k^{new} = \frac{1}{N_k}\sum_{n=1}^N \gamma(z_{nk})(\mathbf x_n - \mathbf \mu_k^{new})(\mathbf x_n - \mathbf \mu_k^{new})^T \\<br>\mathbf \pi_k^{new} = \frac{N_k}{N} \\<br>N_k = \sum_{n=1}^N\gamma(z_{nk})<br>$$</p>
+<ol start="4">
+<li>计算#1中的对数似然函数</li>
+</ol>
+<p>$$<br>ln\ p(\mathbf x| \mathbf \pi, \mathbf \mu, \mathbf \Sigma) =  \sum_{n=1}^N ln \left(\sum_{k=1}^K \pi_k \mathcal N (\mathbf x_k| \mathbf \mu_k, \mathbf \Sigma_k)\right)<br>$$</p>
+<ol start="5">
+<li>检查是否收敛，否则转#2</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># https://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.stats.multivariate_normal.html</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gaussian</span><span class="params">(X, K, mu, cov)</span>:</span></span><br><span class="line">    p = <span class="number">1.0</span> / np.sqrt(np.power(<span class="number">2</span>*math.pi, K) * np.linalg.det(cov))</span><br><span class="line">    i = (X-mu).T @ np.linalg.inv(cov) @ (X-mu)</span><br><span class="line">    p *= np.power(np.e, <span class="number">-0.5</span>*i)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> p</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">X = np.random.rand(<span class="number">2</span>,)</span><br><span class="line">mu = np.random.rand(<span class="number">2</span>, )</span><br><span class="line">cov = np.array([[<span class="number">1</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">3</span>]])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mng = multivariate_normal(mean=mu, cov=cov)</span><br><span class="line">gaussian(X, <span class="number">2</span>, mu, cov), mng.pdf(X)</span><br></pre></td></tr></table></figure>
+<pre><code>(0.08438545576275427, 0.08438545576275427)
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># This import registers the 3D projection, but is otherwise unused.</span></span><br><span class="line"><span class="keyword">from</span> mpl_toolkits.mplot3d <span class="keyword">import</span> Axes3D  <span class="comment"># noqa: F401 unused import</span></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> cm</span><br><span class="line"><span class="keyword">from</span> matplotlib.ticker <span class="keyword">import</span> LinearLocator, FormatStrFormatter</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">fig = plt.figure()</span><br><span class="line">ax = fig.gca(projection=<span class="string">'3d'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Make data.</span></span><br><span class="line">X = np.arange(<span class="number">-5</span>, <span class="number">5</span>, <span class="number">0.25</span>)</span><br><span class="line">Y = np.arange(<span class="number">-5</span>, <span class="number">5</span>, <span class="number">0.25</span>)</span><br><span class="line">X, Y = np.meshgrid(X, Y)</span><br><span class="line">Z = np.array([gaussian(x, <span class="number">2</span>, mu, cov) <span class="keyword">for</span> x <span class="keyword">in</span> zip(X.flatten(), Y.flatten())]).reshape(X.shape)</span><br><span class="line"></span><br><span class="line">print(X.shape, Y.shape, Z.shape)</span><br><span class="line"><span class="comment"># Plot the surface.</span></span><br><span class="line">surf = ax.plot_surface(X, Y, Z, cmap=plt.cm.coolwarm,</span><br><span class="line">                       linewidth=<span class="number">0</span>, antialiased=<span class="keyword">False</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>(40, 40) (40, 40) (40, 40)
+</code></pre><img src="/2019/11/20/Expectation-Maximization-Algorithm/output_11_1.png">
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tqdm <span class="keyword">import</span> tqdm</span><br><span class="line"></span><br><span class="line">N, K, D = len(points), <span class="number">2</span>, len(X[<span class="number">0</span>])</span><br><span class="line">X = points</span><br><span class="line">mu = np.random.randint(min(X[:,<span class="number">0</span>]),max(X[:,<span class="number">0</span>]),size=(K, D)) </span><br><span class="line">d = np.max(X)</span><br><span class="line">rcov = <span class="number">1e-6</span>*np.identity(D)</span><br><span class="line">cov = np.zeros((K, D, D))</span><br><span class="line"><span class="keyword">for</span> dim <span class="keyword">in</span> range(K):</span><br><span class="line">    np.fill_diagonal(cov[dim], d)</span><br><span class="line"></span><br><span class="line">pi0 = np.random.rand()</span><br><span class="line">pi = np.array([pi0, <span class="number">1</span>-pi0])</span><br><span class="line"></span><br><span class="line">rnk = np.zeros((N, K))</span><br><span class="line">muh, covh, Rh = [], [], []</span><br><span class="line"></span><br><span class="line">log_likelihoods = []</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> tqdm(range(<span class="number">100</span>)):</span><br><span class="line">    muh.append(mu)</span><br><span class="line">    covh.append(cov)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># E-Step</span></span><br><span class="line">    rnk = np.zeros((N, K))    </span><br><span class="line">    <span class="keyword">for</span> m, co, p, k <span class="keyword">in</span> zip(mu, cov, pi, range(K)):</span><br><span class="line">        co = co + rcov</span><br><span class="line">        mng = multivariate_normal(mean=m, cov=co)</span><br><span class="line">        d = np.sum([pi_k * multivariate_normal(mean=mu_k, cov=cov_k).pdf(X) <span class="keyword">for</span> pi_k, mu_k, cov_k <span class="keyword">in</span> zip(pi, mu, cov+rcov)], axis=<span class="number">0</span>)</span><br><span class="line">        rnk[:, k] = p * mng.pdf(X) / d</span><br><span class="line">    Rh.append(rnk)</span><br><span class="line">    </span><br><span class="line"><span class="comment">#     for n in range(N):        </span></span><br><span class="line"><span class="comment">#         d = sum([pi[k]*gaussian(X[n], K, mu[k], cov[k]) for k in range(K)])</span></span><br><span class="line"><span class="comment">#         for k in range(K):</span></span><br><span class="line"><span class="comment">#             rnk[n, k] = pi[k] * gaussian(X[n], K, mu[k], cov[k]) / d</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># M-Step</span></span><br><span class="line">    </span><br><span class="line">    mu, cov, pi = np.zeros((K, D)), np.zeros((K, D, D)), np.zeros((K, <span class="number">1</span>))    </span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> range(K):</span><br><span class="line">        nk = np.sum(rnk[:, k], axis=<span class="number">0</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># new mean</span></span><br><span class="line">        muk = (<span class="number">1</span>/nk) * np.sum(X*rnk[:, k].reshape(N, <span class="number">1</span>), axis=<span class="number">0</span>)</span><br><span class="line">        mu[k] = muk</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># new conv matrix</span></span><br><span class="line">        covk = (rnk[:, k].reshape(N, <span class="number">1</span>) * (X-muk)).T @ (X-muk) + rcov</span><br><span class="line">        cov[k] = covk / nk</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># new pi</span></span><br><span class="line">        pi[k] = nk / np.sum(rnk)</span><br><span class="line">        </span><br><span class="line">    log_likelihoods.append(np.log(np.sum(</span><br><span class="line">        [p*multivariate_normal(mu[i], cov[k]).pdf(X) <span class="keyword">for</span> p, i, k <span class="keyword">in</span> zip(pi, range(len(X[<span class="number">0</span>])), range(K))]</span><br><span class="line">    )))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">plt.plot(log_likelihoods, label=<span class="string">'log_likelihoods'</span>)</span><br><span class="line">plt.legend()</span><br><span class="line"></span><br><span class="line">fig = plt.figure()</span><br><span class="line">ax = fig.add_subplot(<span class="number">111</span>)</span><br><span class="line">plt.scatter(points1[:, <span class="number">0</span>], points1[:, <span class="number">1</span>])</span><br><span class="line">plt.scatter(points2[:, <span class="number">0</span>], points2[:, <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> m, c <span class="keyword">in</span> zip(mu, cov):</span><br><span class="line">    mng = multivariate_normal(mean=m,cov=c)</span><br><span class="line">    ax.contour(np.sort(X[:, <span class="number">0</span>]), np.sort(X[:, <span class="number">1</span>]), mng.pdf(XY).reshape(len(X), len(X)),colors=<span class="string">'black'</span>,alpha=<span class="number">0.3</span>)</span><br></pre></td></tr></table></figure>
+<img src="/2019/11/20/Expectation-Maximization-Algorithm/output_12_1.png">
+<img src="/2019/11/20/Expectation-Maximization-Algorithm/output_12_2.png">
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/04/game-theory/" rel="next" title="Game Theory">
+                <i class="fa fa-chevron-left"></i> Game Theory
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Firepaw</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">47</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Jensen-不等式"><span class="nav-number">1.</span> <span class="nav-text">Jensen 不等式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EM思想"><span class="nav-number">2.</span> <span class="nav-text">EM思想</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EM推导"><span class="nav-number">3.</span> <span class="nav-text">EM推导</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多维高斯分布"><span class="nav-number">4.</span> <span class="nav-text">多维高斯分布</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#多元高斯分布的极大似然估计"><span class="nav-number">4.1.</span> <span class="nav-text">多元高斯分布的极大似然估计</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高斯混合模型"><span class="nav-number">5.</span> <span class="nav-text">高斯混合模型</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Firepaw</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
