@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="实现基本的DFT算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="dft">
+<meta property="og:url" content="http://yoursite.com/2019/11/16/dft/index.html">
+<meta property="og:site_name" content="Firepaw">
+<meta property="og:description" content="实现基本的DFT算法">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2019/11/16/dft/output_3_1.png">
+<meta property="og:image" content="http://yoursite.com/2019/11/16/dft/output_4_1.png">
+<meta property="og:image" content="http://yoursite.com/2019/11/16/dft/output_6_1.png">
+<meta property="og:image" content="http://yoursite.com/2019/11/16/dft/output_9_1.png">
+<meta property="og:image" content="http://yoursite.com/2019/11/16/dft/output_12_2.png">
+<meta property="og:image" content="http://yoursite.com/2019/11/16/dft/output_14_1.png">
+<meta property="og:updated_time" content="2019-11-20T09:21:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="dft">
+<meta name="twitter:description" content="实现基本的DFT算法">
+<meta name="twitter:image" content="http://yoursite.com/2019/11/16/dft/output_3_1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/11/16/dft/"/>
+
+
+
+
+
+  <title>dft | Firepaw</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Firepaw</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/16/dft/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Firepaw">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Firepaw">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">dft</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-11-16T23:13:04+08:00">
+                2019-11-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>实现基本的DFT算法</p>
+<a id="more"></a>
+<p>基本的DFT公式如下：</p>
+<p>$$<br>X(k)=\sum_{t=0}^{N-1}x(t)e^{-2\pi itk/N}<br>$$</p>
+<p>向量$x$表示信号在不同时间上的强度。向量$X$表示信号在不同频率上的强度。</p>
+<p>根据欧拉公式$e^{xi} = \cos x + i \sin x$得到：</p>
+<p>$$<br>e^{-2 π i t k / n} = e^{(-2 π t k / n) i} = \cos \left( -2 π \frac{t k}{n} \right) + i \sin \left( -2 π \frac{t k}{n} \right) = \cos \left( 2 π \frac{t k}{n} \right) - i \sin \left( 2 π \frac{t k}{n} \right)<br>$$<br>令$\text{Re}(x)$表示实部，$\text{Im}(x)$表示虚部：<br>$$<br>= \left[ \text{Re}(x(t)) \cos \left( 2 π \frac{t k}{n} \right) + \text{Im}(x(t)) \sin \left( 2 π \frac{t k}{n} \right) \right] + i \left[ -\text{Re}(x(t)) \sin \left( 2 π \frac{t k}{n} \right) + \text{Im}(x(t)) \cos \left( 2 π \frac{t k}{n} \right) \right]<br>$$</p>
+<p>所以<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">static void dft(double[] inreal , double[] inimag,</span><br><span class="line">                double[] outreal, double[] outimag) &#123;</span><br><span class="line">    int n = inreal.length;</span><br><span class="line">    for (int k = 0; k &lt; n; k++) &#123;  // For each output element</span><br><span class="line">        double sumreal = 0;</span><br><span class="line">        double sumimag = 0;</span><br><span class="line">        for (int t = 0; t &lt; n; t++) &#123;  // For each input element</span><br><span class="line">            double angle = 2 * Math.PI * t * k / n;</span><br><span class="line">            sumreal +=  inreal[t] * Math.cos(angle) + inimag[t] * Math.sin(angle);</span><br><span class="line">            sumimag += -inreal[t] * Math.sin(angle) + inimag[t] * Math.cos(angle);</span><br><span class="line">        &#125;</span><br><span class="line">        outreal[k] = sumreal;</span><br><span class="line">        outimag[k] = sumimag;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> librosa</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">%matplotlib inline</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">compute_dft_real_pair</span><span class="params">(inreal, inimag)</span>:</span></span><br><span class="line">    <span class="keyword">assert</span> len(inreal) == len(inimag)</span><br><span class="line">    n = len(inreal)</span><br><span class="line">    outreal = []</span><br><span class="line">    outimag = []</span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> range(n):  <span class="comment"># For each output element</span></span><br><span class="line">        sumreal = <span class="number">0.0</span></span><br><span class="line">        sumimag = <span class="number">0.0</span></span><br><span class="line">        <span class="keyword">for</span> t <span class="keyword">in</span> range(n):  <span class="comment"># For each input element</span></span><br><span class="line">            angle = <span class="number">2</span> * math.pi * t * k / n</span><br><span class="line">            sumreal +=  inreal[t] * math.cos(angle) + inimag[t] * math.sin(angle)</span><br><span class="line">            sumimag += -inreal[t] * math.sin(angle) + inimag[t] * math.cos(angle)</span><br><span class="line">        outreal.append(sumreal)</span><br><span class="line">        outimag.append(sumimag)</span><br><span class="line">    <span class="keyword">return</span> (outreal, outimag)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">y = [<span class="number">-0.029907227</span>,<span class="number">-0.03567505</span>,<span class="number">0.002960205</span>,<span class="number">0.0039367676</span>,<span class="number">-0.013824463</span>,<span class="number">-0.010650635</span>,<span class="number">0.003326416</span>,<span class="number">0.0033874512</span>,<span class="number">0.0012207031</span>,<span class="number">0.00021362305</span>,<span class="number">-0.0046081543</span>,<span class="number">0.0046691895</span>,<span class="number">0.0014648438</span>,<span class="number">-0.010040283</span>,<span class="number">-0.0027770996</span>,<span class="number">0.003326416</span>,<span class="number">-0.0033569336</span>,<span class="number">0.0051574707</span>,<span class="number">-0.013092041</span>,<span class="number">-0.022094727</span>,<span class="number">-0.010955811</span>,<span class="number">-0.025817871</span>,<span class="number">-0.021484375</span>,<span class="number">-0.0132751465</span>,<span class="number">-0.025909424</span>,<span class="number">-0.026763916</span>,<span class="number">-0.028503418</span>,<span class="number">-0.032409668</span>,<span class="number">-0.01361084</span>,<span class="number">-0.0289917</span>,<span class="number">-0.02658081</span>,<span class="number">0.008392334</span>,<span class="number">-0.012969971</span>,<span class="number">-0.037261963</span>,<span class="number">-0.006286621</span>,<span class="number">0.022583008</span>,<span class="number">0.019744873</span>,<span class="number">-0.012878418</span>,<span class="number">-0.025268555</span>,<span class="number">0.01361084</span>,<span class="number">0.024780273</span>,<span class="number">0.0012207031</span>,<span class="number">-0.0030517578</span>,<span class="number">0.0050964355</span>,<span class="number">0.005218506</span>,<span class="number">0.0030822754</span>,<span class="number">-0.002532959</span>,<span class="number">-0.0022888184</span>,<span class="number">-0.0067749023</span>,<span class="number">-0.008514404</span>,<span class="number">-0.010955811</span>,<span class="number">-0.014923096</span>,<span class="number">-0.007019043</span>,<span class="number">-0.0066223145</span>,<span class="number">-0.009521484</span>,<span class="number">-0.013336182</span>,<span class="number">-0.0067749023</span>,<span class="number">0.008483887</span>,<span class="number">0.003692627</span>,<span class="number">-0.0056762695</span>,<span class="number">0.0022277832</span>,<span class="number">0.010986328</span>,<span class="number">0.0055236816</span>,<span class="number">0.0074768066</span>,<span class="number">0.016571045</span>,<span class="number">0.015197754</span>,<span class="number">0.011383057</span>,<span class="number">0.015625</span>,<span class="number">0.012512207</span>,<span class="number">0.0064086914</span>,<span class="number">0.013427734</span>,<span class="number">0.013793945</span>,<span class="number">0.006591797</span>,<span class="number">0.0016784668</span>,<span class="number">0.008392334</span>,<span class="number">0.014129639</span>,<span class="number">0.003112793</span>,<span class="number">-0.0034484863</span>,<span class="number">0.0023498535</span>,<span class="number">0.010101318</span>,<span class="number">0.007965088</span>,<span class="number">-0.001739502</span>,<span class="number">0.001159668</span>,<span class="number">0.013427734</span>,<span class="number">0.006652832</span>,<span class="number">-0.0059509277</span>,<span class="number">-0.00680542</span>,<span class="number">-0.0048217773</span>,<span class="number">0.0037231445</span>,<span class="number">0.0066223145</span>,<span class="number">0.0010986328</span>,<span class="number">0.0035095215</span>,<span class="number">0.0063171387</span>,<span class="number">0.00579834</span>,<span class="number">0.0032043457</span>,<span class="number">0.006286621</span>,<span class="number">0.004211426</span>,<span class="number">0.00036621094</span>,<span class="number">0.0050354004</span>,<span class="number">-0.004058838</span>,<span class="number">-0.0043029785</span>,<span class="number">0.005126953</span>,<span class="number">0.002532959</span>,<span class="number">-0.0036315918</span>,<span class="number">-0.0038146973</span>,<span class="number">0.0032958984</span>,<span class="number">0.0035705566</span>,<span class="number">-0.0079956055</span>,<span class="number">-0.009552002</span>,<span class="number">-0.0037841797</span>,<span class="number">0.0024108887</span>,<span class="number">0.0037841797</span>,<span class="number">-0.0046691895</span>,<span class="number">-0.002166748</span>,<span class="number">-3.0517578e-05</span>,<span class="number">0.007232666</span>,<span class="number">0.013580322</span>,<span class="number">-0.00033569336</span>,<span class="number">-0.0014343262</span>,<span class="number">0.012817383</span>,<span class="number">0.013763428</span>,<span class="number">0.013122559</span>,<span class="number">0.015014648</span>,<span class="number">0.015350342</span>,<span class="number">0.018829346</span>,<span class="number">0.012176514</span>,<span class="number">0.01876831</span>,<span class="number">0.032287598</span>,<span class="number">0.020812988</span>,<span class="number">0.010040283</span>,<span class="number">0.014343262</span>,<span class="number">0.030395508</span>,<span class="number">0.03869629</span>,<span class="number">0.029632568</span>,<span class="number">0.016571045</span>,<span class="number">0.0126953125</span>,<span class="number">0.027862549</span>,<span class="number">0.030700684</span>,<span class="number">0.019500732</span>,<span class="number">0.016448975</span>,<span class="number">0.015899658</span>,<span class="number">0.023773193</span>,<span class="number">0.0262146</span>,<span class="number">0.016479492</span>,<span class="number">0.017974854</span>,<span class="number">0.022399902</span>,<span class="number">0.016662598</span>,<span class="number">0.012542725</span>,<span class="number">0.014373779</span>,<span class="number">0.020111084</span>,<span class="number">0.00970459</span>,<span class="number">-0.0021972656</span>,<span class="number">0.0064697266</span>,<span class="number">0.0154418945</span>,<span class="number">0.0113220215</span>,<span class="number">-0.008911133</span>,<span class="number">-0.012054443</span>,<span class="number">0.0014953613</span>,<span class="number">0.0031738281</span>,<span class="number">-0.006591797</span>,<span class="number">-0.017547607</span>,<span class="number">-0.011413574</span>,<span class="number">-0.00021362305</span>,<span class="number">-0.0051879883</span>,<span class="number">-0.010101318</span>,<span class="number">-0.011993408</span>,<span class="number">-0.01473999</span>,<span class="number">-0.014343262</span>,<span class="number">-0.010528564</span>,<span class="number">-0.012756348</span>,<span class="number">-0.018615723</span>,<span class="number">-0.012939453</span>,<span class="number">-0.011627197</span>,<span class="number">-0.017822266</span>,<span class="number">-0.010345459</span>,<span class="number">-0.0032958984</span>,<span class="number">-0.006286621</span>,<span class="number">-0.003967285</span>,<span class="number">0.0044555664</span>,<span class="number">0.011077881</span>,<span class="number">0.0059509277</span>,<span class="number">0.0027770996</span>,<span class="number">0.015625</span>,<span class="number">0.028137207</span>,<span class="number">0.03466797</span>,<span class="number">0.043762207</span>,<span class="number">0.040893555</span>,<span class="number">0.030029297</span>,<span class="number">0.040740967</span>,<span class="number">0.06384277</span>,<span class="number">0.06716919</span>,<span class="number">0.05947876</span>,<span class="number">0.060638428</span>,<span class="number">0.06820679</span>,<span class="number">0.08218384</span>,<span class="number">0.09146118</span>,<span class="number">0.09240723</span>,<span class="number">0.08236694</span>,<span class="number">0.054229736</span>,<span class="number">0.044708252</span>,<span class="number">0.061798096</span>,<span class="number">0.06591797</span>,<span class="number">0.05456543</span>,<span class="number">0.030975342</span>,<span class="number">0.015594482</span>,<span class="number">0.018218994</span>,<span class="number">0.012054443</span>,<span class="number">0.0036621094</span>,<span class="number">0.0012512207</span>,<span class="number">-0.019165039</span>,<span class="number">-0.034973145</span>,<span class="number">-0.015380859</span>,<span class="number">-0.0032043457</span>,<span class="number">0.00033569336</span>,<span class="number">-0.010009766</span>,<span class="number">-0.033355713</span>,<span class="number">-0.021606445</span>,<span class="number">-0.00491333</span>,<span class="number">-0.0025024414</span>,<span class="number">-0.005859375</span>,<span class="number">-0.016845703</span>,<span class="number">-0.01083374</span>,<span class="number">0.0038452148</span>,<span class="number">-0.000579834</span>,<span class="number">-0.003326416</span>,<span class="number">0.004425049</span>,<span class="number">0.0009460449</span>,<span class="number">-0.011199951</span>,<span class="number">-0.013214111</span>,<span class="number">-0.0008239746</span>,<span class="number">0.0014953613</span>,<span class="number">-0.00088500977</span>,<span class="number">0.0076904297</span>,<span class="number">0.012084961</span>,<span class="number">0.008026123</span>,<span class="number">0.003692627</span>,<span class="number">0.011138916</span>,<span class="number">0.023834229</span>,<span class="number">0.023864746</span>,<span class="number">0.02130127</span>,<span class="number">0.02456665</span>,<span class="number">0.033203125</span>,<span class="number">0.04586792</span>,<span class="number">0.056518555</span>,<span class="number">0.06591797</span>,<span class="number">0.072387695</span>,<span class="number">0.077545166</span>,<span class="number">0.086639404</span>,<span class="number">0.09927368</span>,<span class="number">0.111846924</span>,<span class="number">0.1126709</span>,<span class="number">0.092437744</span>,<span class="number">0.07473755</span>,<span class="number">0.08215332</span>,<span class="number">0.09082031</span>,<span class="number">0.07904053</span>,<span class="number">0.051971436</span>,<span class="number">0.023620605</span>,<span class="number">0.014892578</span>,<span class="number">0.017547607</span>,<span class="number">0.00881958</span>,<span class="number">-0.007598877</span>,<span class="number">-0.020690918</span>,<span class="number">-0.033813477</span>,<span class="number">-0.031402588</span>,<span class="number">-0.030334473</span>,<span class="number">-0.034606934</span>,<span class="number">-0.023986816</span>,<span class="number">-0.028137207</span>,<span class="number">-0.031677246</span>,<span class="number">-0.028747559</span>,<span class="number">-0.045898438</span>,<span class="number">-0.036834717</span>,<span class="number">-0.012390137</span>,<span class="number">-0.015258789</span>,<span class="number">-0.019897461</span>,<span class="number">-0.032196045</span>,<span class="number">-0.023101807</span>,<span class="number">0.006134033</span>,<span class="number">-0.0015869141</span>,<span class="number">-0.017211914</span>,<span class="number">-0.018951416</span>,<span class="number">-0.01663208</span>,<span class="number">-0.005279541</span>,<span class="number">-0.0052490234</span>,<span class="number">-0.008972168</span>,<span class="number">-0.009094238</span>,<span class="number">-0.018249512</span>,<span class="number">-0.020233154</span>,<span class="number">-0.014862061</span>,<span class="number">-0.013153076</span>,<span class="number">-0.012207031</span>,<span class="number">-0.0063171387</span>,<span class="number">0.0037841797</span>,<span class="number">0.0066223145</span>,<span class="number">0.013641357</span>,<span class="number">0.026611328</span>,<span class="number">0.036743164</span>,<span class="number">0.047332764</span>,<span class="number">0.058258057</span>,<span class="number">0.075653076</span>,<span class="number">0.084503174</span>,<span class="number">0.08944702</span>,<span class="number">0.10809326</span>,<span class="number">0.11871338</span>,<span class="number">0.11773682</span>,<span class="number">0.12094116</span>,<span class="number">0.11972046</span>,<span class="number">0.11550903</span>,<span class="number">0.100372314</span>,<span class="number">0.07815552</span>,<span class="number">0.07354736</span>,<span class="number">0.067840576</span>,<span class="number">0.039245605</span>,<span class="number">0.014129639</span>,<span class="number">0.011260986</span>,<span class="number">0.0048828125</span>,<span class="number">-0.018829346</span>,<span class="number">-0.045654297</span>,<span class="number">-0.06112671</span>,<span class="number">-0.06350708</span>,<span class="number">-0.05557251</span>,<span class="number">-0.045288086</span>,<span class="number">-0.047332764</span>,<span class="number">-0.05178833</span>,<span class="number">-0.04324341</span>,<span class="number">-0.025543213</span>,<span class="number">-0.01586914</span>,<span class="number">-0.015808105</span>,<span class="number">-0.009277344</span>,<span class="number">-0.0034484863</span>,<span class="number">-0.0072021484</span>,<span class="number">-0.019897461</span>,<span class="number">-0.0262146</span>,<span class="number">-0.019866943</span>,<span class="number">-0.0025634766</span>,<span class="number">-0.0033569336</span>,<span class="number">-0.038635254</span>,<span class="number">-0.06390381</span>,<span class="number">-0.04751587</span>,<span class="number">-0.025726318</span>,<span class="number">-0.041015625</span>,<span class="number">-0.06674194</span>,<span class="number">-0.061950684</span>,<span class="number">-0.048309326</span>,<span class="number">-0.041168213</span>,<span class="number">-0.030273438</span>,<span class="number">-0.028045654</span>,<span class="number">-0.026977539</span>,<span class="number">-0.015197754</span>,<span class="number">0.0013427734</span>,<span class="number">0.008758545</span>,<span class="number">0.012390137</span>,<span class="number">0.027130127</span>,<span class="number">0.042541504</span>,<span class="number">0.041748047</span>,<span class="number">0.048736572</span>,<span class="number">0.07119751</span>,<span class="number">0.08584595</span>,<span class="number">0.09100342</span>,<span class="number">0.08847046</span>,<span class="number">0.09576416</span>,<span class="number">0.11502075</span>,<span class="number">0.1277771</span>,<span class="number">0.13034058</span>,<span class="number">0.13113403</span>,<span class="number">0.13519287</span>,<span class="number">0.12414551</span>,<span class="number">0.089019775</span>,<span class="number">0.060668945</span>,<span class="number">0.058807373</span>,<span class="number">0.053527832</span>,<span class="number">0.037750244</span>,<span class="number">0.014587402</span>,<span class="number">-0.011505127</span>,<span class="number">-0.024719238</span>,<span class="number">-0.0501709</span>,<span class="number">-0.06741333</span>,<span class="number">-0.05029297</span>,<span class="number">-0.033172607</span>,<span class="number">-0.031799316</span>,<span class="number">-0.044677734</span>,<span class="number">-0.053863525</span>,<span class="number">-0.02798462</span>,<span class="number">-0.0047302246</span>,<span class="number">-0.005432129</span>,<span class="number">0.00079345703</span>,<span class="number">-0.003753662</span>,<span class="number">-0.01272583</span>,<span class="number">-0.00793457</span>,<span class="number">-0.018798828</span>,<span class="number">-0.03564453</span>,<span class="number">-0.027130127</span>,<span class="number">-0.025512695</span>,<span class="number">-0.06185913</span>,<span class="number">-0.09710693</span>,<span class="number">-0.08947754</span>,<span class="number">-0.062164307</span>,<span class="number">-0.06097412</span>,<span class="number">-0.08721924</span>,<span class="number">-0.09207153</span>,<span class="number">-0.07086182</span>,<span class="number">-0.06829834</span>,<span class="number">-0.061065674</span>,<span class="number">-0.043121338</span>,<span class="number">-0.04421997</span>,<span class="number">-0.026550293</span>,<span class="number">-9.1552734e-05</span>,<span class="number">-0.001739502</span>,<span class="number">-0.0028381348</span>,<span class="number">0.010955811</span>,<span class="number">0.031982422</span>,<span class="number">0.034301758</span>,<span class="number">0.032562256</span>,<span class="number">0.05697632</span>,<span class="number">0.059448242</span>,<span class="number">0.04864502</span>,<span class="number">0.068878174</span>,<span class="number">0.093322754</span>,<span class="number">0.095458984</span>,<span class="number">0.09338379</span>,<span class="number">0.102752686</span>,<span class="number">0.11880493</span>,<span class="number">0.12155151</span>,<span class="number">0.11685181</span>,<span class="number">0.12808228</span>,<span class="number">0.11437988</span>,<span class="number">0.07028198</span>,<span class="number">0.03652954</span>,<span class="number">0.018432617</span>,<span class="number">0.01876831</span>,<span class="number">0.019195557</span>,<span class="number">-0.005218506</span>,<span class="number">-0.035064697</span>,<span class="number">-0.058288574</span>,<span class="number">-0.07321167</span>,<span class="number">-0.06286621</span>,<span class="number">-0.032409668</span>,<span class="number">-0.022338867</span>,<span class="number">-0.034698486</span>,<span class="number">-0.03543091</span>,<span class="number">-0.018005371</span>,<span class="number">0.0030212402</span>,<span class="number">0.023132324</span>,<span class="number">0.03451538</span>,<span class="number">0.021911621</span>,<span class="number">0.0010375977</span>,<span class="number">-0.011566162</span>,<span class="number">-0.015594482</span>,<span class="number">-0.009277344</span>,<span class="number">-0.008575439</span>,<span class="number">-0.027740479</span>,<span class="number">-0.05569458</span>,<span class="number">-0.08230591</span>,<span class="number">-0.09442139</span>,<span class="number">-0.09439087</span>,<span class="number">-0.095214844</span>,<span class="number">-0.09698486</span>,<span class="number">-0.09396362</span>,<span class="number">-0.08270264</span>,<span class="number">-0.06893921</span>,<span class="number">-0.0569458</span>,<span class="number">-0.056365967</span>,<span class="number">-0.049743652</span>,<span class="number">-0.024932861</span>,<span class="number">-0.014129639</span>,<span class="number">-0.0060424805</span>,<span class="number">0.014160156</span>,<span class="number">0.020812988</span>,<span class="number">0.023590088</span>,<span class="number">0.029205322</span>,<span class="number">0.02432251</span>,<span class="number">0.0211792</span>,<span class="number">0.028656006</span>,<span class="number">0.031433105</span>,<span class="number">0.017730713</span>,<span class="number">0.012512207</span>,<span class="number">0.03515625</span>,<span class="number">0.06555176</span>,<span class="number">0.07888794</span>,<span class="number">0.07925415</span>,<span class="number">0.08654785</span>,<span class="number">0.10018921</span>,<span class="number">0.12023926</span>,<span class="number">0.13827515</span>,<span class="number">0.1267395</span>,<span class="number">0.07281494</span>,<span class="number">0.02017212</span>,<span class="number">0.018554688</span>,<span class="number">0.040924072</span>,<span class="number">0.044555664</span>,<span class="number">0.011566162</span>,<span class="number">-0.041809082</span>,<span class="number">-0.088653564</span>,<span class="number">-0.097717285</span>,<span class="number">-0.0640564</span>,<span class="number">-0.025482178</span>,<span class="number">-0.015777588</span>,<span class="number">-0.029418945</span>,<span class="number">-0.039978027</span>,<span class="number">-0.033843994</span>,<span class="number">-0.0039367676</span>,<span class="number">0.033294678</span>,<span class="number">0.047851562</span>,<span class="number">0.03604126</span>,<span class="number">0.020050049</span>,<span class="number">0.006439209</span>,<span class="number">0.0004272461</span>,<span class="number">0.0018310547</span>,<span class="number">0.003479004</span>,<span class="number">-0.0073242188</span>,<span class="number">-0.037353516</span>,<span class="number">-0.06365967</span>,<span class="number">-0.081726074</span>,<span class="number">-0.084869385</span>,<span class="number">-0.07632446</span>,<span class="number">-0.082733154</span>,<span class="number">-0.08886719</span>,<span class="number">-0.091308594</span>,<span class="number">-0.09597778</span>,<span class="number">-0.08773804</span>,<span class="number">-0.057250977</span>,<span class="number">-0.011413574</span>,<span class="number">0.00015258789</span>,<span class="number">-0.018981934</span>,<span class="number">-0.009887695</span>,<span class="number">0.012268066</span>,<span class="number">0.018920898</span>,<span class="number">0.019958496</span>,<span class="number">0.02218628</span>,<span class="number">0.02508545</span>,<span class="number">0.024383545</span>,<span class="number">0.019042969</span>,<span class="number">0.015930176</span>,<span class="number">0.002960205</span>,<span class="number">0.003540039</span>,<span class="number">0.01977539</span>,<span class="number">0.022094727</span>,<span class="number">0.02810669</span>,<span class="number">0.056549072</span>,<span class="number">0.08743286</span>,<span class="number">0.09710693</span>,<span class="number">0.11883545</span>,<span class="number">0.1560669</span>,<span class="number">0.15264893</span>,<span class="number">0.095825195</span>,<span class="number">0.02758789</span>,<span class="number">-3.0517578e-05</span>,<span class="number">0.0071411133</span>,<span class="number">0.018157959</span>,<span class="number">0.02822876</span>,<span class="number">0.0032043457</span>,<span class="number">-0.064208984</span>,<span class="number">-0.11593628</span>,<span class="number">-0.116119385</span>,<span class="number">-0.06945801</span>,<span class="number">-0.027282715</span>,<span class="number">-0.021362305</span>,<span class="number">-0.008422852</span>,<span class="number">-0.013549805</span>,<span class="number">-0.019683838</span>,<span class="number">0.023345947</span>,<span class="number">0.052825928</span>,<span class="number">0.055480957</span>,<span class="number">0.050354004</span>,<span class="number">0.020812988</span>,<span class="number">-0.0038757324</span>,<span class="number">-0.013092041</span>,<span class="number">-0.0045776367</span>,<span class="number">0.016845703</span>,<span class="number">-0.0030517578</span>,<span class="number">-0.047943115</span>,<span class="number">-0.07562256</span>,<span class="number">-0.10192871</span>,<span class="number">-0.11248779</span>,<span class="number">-0.08276367</span>,<span class="number">-0.038238525</span>,<span class="number">-0.029907227</span>,<span class="number">-0.052947998</span>,<span class="number">-0.062438965</span>,<span class="number">-0.058166504</span>,<span class="number">-0.062408447</span>,<span class="number">-0.07241821</span>,<span class="number">-0.03894043</span>,<span class="number">0.01739502</span>,<span class="number">0.020721436</span>,<span class="number">9.1552734e-05</span>,<span class="number">-0.019470215</span>,<span class="number">-0.03149414</span>,<span class="number">-0.019439697</span>,<span class="number">-0.016845703</span>,<span class="number">-0.008514404</span>,<span class="number">-0.0018615723</span>,<span class="number">-0.02017212</span>,<span class="number">-0.02468872</span>,<span class="number">-0.022460938</span>,<span class="number">-0.011077881</span>,<span class="number">0.024536133</span>,<span class="number">0.03881836</span>,<span class="number">0.037078857</span>,<span class="number">0.044891357</span>,<span class="number">0.059631348</span>,<span class="number">0.09176636</span>,<span class="number">0.12112427</span>,<span class="number">0.1637268</span>,<span class="number">0.20812988</span>,<span class="number">0.15084839</span>,<span class="number">0.0047302246</span>,<span class="number">-0.092681885</span>,<span class="number">-0.062927246</span>,<span class="number">0.02822876</span>,<span class="number">0.06643677</span>,<span class="number">0.02230835</span>,<span class="number">-0.059295654</span>,<span class="number">-0.13772583</span>,<span class="number">-0.16879272</span>,<span class="number">-0.120788574</span>,<span class="number">-0.031951904</span>,<span class="number">0.02911377</span>,<span class="number">0.031829834</span>,<span class="number">0.0046081543</span>,<span class="number">-0.0154418945</span>,<span class="number">0.00869751</span>,<span class="number">0.07662964</span>,<span class="number">0.10635376</span>,<span class="number">0.07891846</span>,<span class="number">0.042663574</span>,<span class="number">0.011077881</span>,<span class="number">-0.0146484375</span>,<span class="number">-0.021606445</span>,<span class="number">-0.0072021484</span>,<span class="number">-0.001953125</span>,<span class="number">-0.02935791</span>,<span class="number">-0.07574463</span>,<span class="number">-0.119903564</span>,<span class="number">-0.13955688</span>,<span class="number">-0.105407715</span>,<span class="number">-0.05340576</span>,<span class="number">-0.031219482</span>,<span class="number">-0.03866577</span>,<span class="number">-0.06072998</span>,<span class="number">-0.06594849</span>,<span class="number">-0.0597229</span>,<span class="number">-0.059020996</span>,<span class="number">-0.044006348</span>,<span class="number">-0.020904541</span>,<span class="number">-0.0049743652</span>,<span class="number">0.0026245117</span>,<span class="number">-0.017181396</span>,<span class="number">-0.04458618</span>,<span class="number">-0.04888916</span>,<span class="number">-0.038482666</span>,<span class="number">-0.022094727</span>,<span class="number">-0.018005371</span>,<span class="number">-0.02218628</span>,<span class="number">-0.021972656</span>,<span class="number">-0.018066406</span>,<span class="number">0.003326416</span>,<span class="number">0.032196045</span>,<span class="number">0.04928589</span>,<span class="number">0.0546875</span>,<span class="number">0.053466797</span>,<span class="number">0.057373047</span>,<span class="number">0.07595825</span>,<span class="number">0.10723877</span>,<span class="number">0.1541748</span>,<span class="number">0.21362305</span>,<span class="number">0.21914673</span>,<span class="number">0.076416016</span>,<span class="number">-0.12768555</span>,<span class="number">-0.16079712</span>,<span class="number">-0.025939941</span>,<span class="number">0.08312988</span>,<span class="number">0.08129883</span>,<span class="number">0.010009766</span>,<span class="number">-0.068573</span>,<span class="number">-0.14920044</span>,<span class="number">-0.17285156</span>,<span class="number">-0.0687561</span>,<span class="number">0.052581787</span>,<span class="number">0.0814209</span>,<span class="number">0.05908203</span>,<span class="number">0.024139404</span>,<span class="number">0.0038757324</span>,<span class="number">0.049194336</span>,<span class="number">0.112213135</span>,<span class="number">0.10772705</span>,<span class="number">0.05999756</span>,<span class="number">0.026519775</span>,<span class="number">-0.0051879883</span>,<span class="number">-0.056884766</span>,<span class="number">-0.06793213</span>,<span class="number">-0.023651123</span>,<span class="number">-0.010314941</span>,<span class="number">-0.059692383</span>,<span class="number">-0.123535156</span>,<span class="number">-0.15029907</span>,<span class="number">-0.13150024</span>,<span class="number">-0.076934814</span>,<span class="number">-0.018951416</span>,<span class="number">-0.014221191</span>,<span class="number">-0.042510986</span>,<span class="number">-0.04486084</span>,<span class="number">-0.034057617</span>,<span class="number">-0.045684814</span>,<span class="number">-0.041137695</span>,<span class="number">0.0010375977</span>,<span class="number">0.019012451</span>,<span class="number">-0.00289917</span>,<span class="number">-0.036010742</span>,<span class="number">-0.063446045</span>,<span class="number">-0.06945801</span>,<span class="number">-0.06088257</span>,<span class="number">-0.039489746</span>,<span class="number">-0.009429932</span>,<span class="number">-0.016143799</span>,<span class="number">-0.039978027</span>,<span class="number">-0.042266846</span>,<span class="number">-0.028015137</span>,<span class="number">0.01953125</span>,<span class="number">0.05895996</span>,<span class="number">0.057678223</span>,<span class="number">0.042114258</span>,<span class="number">0.03161621</span>,<span class="number">0.03805542</span>,<span class="number">0.048950195</span>,<span class="number">0.073272705</span>,<span class="number">0.13253784</span>,<span class="number">0.19604492</span>,<span class="number">0.25253296</span>,<span class="number">0.24499512</span>,<span class="number">0.041229248</span>,<span class="number">-0.1921997</span>,<span class="number">-0.13534546</span>,<span class="number">0.08343506</span>,<span class="number">0.15359497</span>,<span class="number">0.077941895</span>,<span class="number">0.0075683594</span>,<span class="number">-0.035217285</span>,<span class="number">-0.13446045</span>,<span class="number">-0.20385742</span>,<span class="number">-0.0763855</span>,<span class="number">0.073272705</span>,<span class="number">0.07702637</span>,<span class="number">0.071380615</span>,<span class="number">0.04916382</span>,<span class="number">-0.015411377</span>,<span class="number">0.029052734</span>,<span class="number">0.12249756</span>,<span class="number">0.100128174</span>,<span class="number">0.037017822</span>,<span class="number">0.028625488</span>,<span class="number">0.005218506</span>,<span class="number">-0.06335449</span>,<span class="number">-0.077545166</span>,<span class="number">-0.023406982</span>,<span class="number">-0.01184082</span>,<span class="number">-0.08123779</span>,<span class="number">-0.12680054</span>,<span class="number">-0.10797119</span>,<span class="number">-0.0982666</span>,<span class="number">-0.07064819</span>,<span class="number">-0.011688232</span>,<span class="number">-0.006500244</span>,<span class="number">-0.020874023</span>,<span class="number">0.007507324</span>,<span class="number">0.0036315918</span>,<span class="number">-0.056915283</span>,<span class="number">-0.067718506</span>,<span class="number">-0.008026123</span>,<span class="number">0.028839111</span>,<span class="number">0.024536133</span>,<span class="number">0.007446289</span>,<span class="number">-0.04147339</span>,<span class="number">-0.09750366</span>,<span class="number">-0.094696045</span>,<span class="number">-0.040863037</span>,<span class="number">0.012664795</span>,<span class="number">0.023834229</span>,<span class="number">0.015380859</span>,<span class="number">0.02508545</span>,<span class="number">0.015319824</span>,<span class="number">0.019927979</span>,<span class="number">0.062042236</span>,<span class="number">0.07736206</span>,<span class="number">0.06869507</span>,<span class="number">0.053222656</span>,<span class="number">0.02166748</span>,<span class="number">0.009033203</span>,<span class="number">0.044677734</span>,<span class="number">0.10681152</span>,<span class="number">0.15563965</span>,<span class="number">0.16766357</span>,<span class="number">0.2078247</span>,<span class="number">0.23806763</span>,<span class="number">0.06350708</span>,<span class="number">-0.18127441</span>,<span class="number">-0.14117432</span>,<span class="number">0.0491333</span>,<span class="number">0.12112427</span>,<span class="number">0.114990234</span>,<span class="number">0.04663086</span>,<span class="number">-0.058166504</span>,<span class="number">-0.18862915</span>,<span class="number">-0.26687622</span>,<span class="number">-0.1138916</span>,<span class="number">0.06149292</span>,<span class="number">0.066589355</span>,<span class="number">0.0864563</span>,<span class="number">0.06088257</span>,<span class="number">-0.03479004</span>,<span class="number">0.026519775</span>,<span class="number">0.11437988</span>,<span class="number">0.069488525</span>,<span class="number">0.046173096</span>,<span class="number">0.06661987</span>,<span class="number">0.023895264</span>,<span class="number">-0.06668091</span>,<span class="number">-0.11529541</span>,<span class="number">-0.08105469</span>,<span class="number">-0.039642334</span>,<span class="number">-0.058288574</span>,<span class="number">-0.08483887</span>,<span class="number">-0.1027832</span>,<span class="number">-0.12625122</span>,<span class="number">-0.072753906</span>,<span class="number">0.0184021</span>,<span class="number">0.019104004</span>,<span class="number">-0.0023498535</span>,<span class="number">0.010314941</span>,<span class="number">-0.027252197</span>,<span class="number">-0.07797241</span>,<span class="number">-0.034423828</span>,<span class="number">0.040527344</span>,<span class="number">0.05130005</span>,<span class="number">0.035980225</span>,<span class="number">0.026123047</span>,<span class="number">-0.020568848</span>,<span class="number">-0.075408936</span>,<span class="number">-0.054534912</span>,<span class="number">0.0152282715</span>,<span class="number">0.056793213</span>,<span class="number">0.052093506</span>,<span class="number">0.029296875</span>,<span class="number">0.0138549805</span>,<span class="number">-0.005645752</span>,<span class="number">0.008850098</span>,<span class="number">0.06048584</span>,<span class="number">0.059051514</span>,<span class="number">0.022064209</span>,<span class="number">0.009765625</span>,<span class="number">-0.0037841797</span>,<span class="number">-0.011169434</span>,<span class="number">0.017700195</span>,<span class="number">0.06561279</span>,<span class="number">0.10305786</span>,<span class="number">0.13943481</span>,<span class="number">0.19412231</span>,<span class="number">0.2659607</span>,<span class="number">0.2904663</span>,<span class="number">0.11480713</span>,<span class="number">-0.15939331</span>,<span class="number">-0.1656189</span>,<span class="number">0.026519775</span>,<span class="number">0.089263916</span>,<span class="number">0.048797607</span>,<span class="number">-0.017089844</span>,<span class="number">-0.082458496</span>,<span class="number">-0.16415405</span>,<span class="number">-0.27679443</span>,<span class="number">-0.19515991</span>,<span class="number">0.0115356445</span>,<span class="number">0.059753418</span>,<span class="number">0.100128174</span>,<span class="number">0.1350708</span>,<span class="number">0.025604248</span>,<span class="number">0.016235352</span>,<span class="number">0.11517334</span>,<span class="number">0.09020996</span>,<span class="number">0.033966064</span>,<span class="number">0.04421997</span>,<span class="number">0.019165039</span>,<span class="number">-0.05404663</span>,<span class="number">-0.08267212</span>,<span class="number">-0.0446167</span>,<span class="number">-0.03164673</span>,<span class="number">-0.09085083</span>,<span class="number">-0.118499756</span>,<span class="number">-0.0592041</span>,<span class="number">-0.02178955</span>,<span class="number">-0.023345947</span>,<span class="number">0.011047363</span>,<span class="number">0.011962891</span>,<span class="number">-0.04940796</span>,<span class="number">-0.04724121</span>,<span class="number">0.010528564</span>,<span class="number">0.011962891</span>,<span class="number">0.008300781</span>,<span class="number">0.049194336</span>,<span class="number">0.0519104</span>,<span class="number">0.025817871</span>,<span class="number">0.03265381</span>,<span class="number">0.032043457</span>,<span class="number">-0.01651001</span>,<span class="number">-0.066101074</span>,<span class="number">-0.05508423</span>,<span class="number">0.007537842</span>,<span class="number">0.053466797</span>,<span class="number">0.048187256</span>,<span class="number">0.0262146</span>,<span class="number">0.015045166</span>,<span class="number">-0.0063171387</span>,<span class="number">-0.0256958</span>,<span class="number">-0.014099121</span>,<span class="number">-0.0055236816</span>,<span class="number">-0.0027160645</span>,<span class="number">0.0154418945</span>,<span class="number">0.016326904</span>,<span class="number">0.016448975</span>,<span class="number">0.04940796</span>,<span class="number">0.100860596</span>,<span class="number">0.15731812</span>,<span class="number">0.18887329</span>,<span class="number">0.19613647</span>,<span class="number">0.21325684</span>,<span class="number">0.2616577</span>,<span class="number">0.19647217</span>,<span class="number">-0.092285156</span>,<span class="number">-0.26071167</span>,<span class="number">-0.11264038</span>,<span class="number">-0.005065918</span>,<span class="number">-0.024536133</span>,<span class="number">-0.029724121</span>,<span class="number">-0.067840576</span>,<span class="number">-0.13845825</span>,<span class="number">-0.255188</span>,<span class="number">-0.2579956</span>,<span class="number">-0.026489258</span>,<span class="number">0.117614746</span>,<span class="number">0.13552856</span>,<span class="number">0.21203613</span>,<span class="number">0.15893555</span>,<span class="number">0.039123535</span>,<span class="number">0.07369995</span>,<span class="number">0.07699585</span>,<span class="number">9.1552734e-05</span>,<span class="number">0.021514893</span>,<span class="number">0.066711426</span>,<span class="number">0.016601562</span>,<span class="number">-0.072753906</span>,<span class="number">-0.13137817</span>,<span class="number">-0.12835693</span>,<span class="number">-0.09906006</span>,<span class="number">-0.088653564</span>,<span class="number">-0.0423584</span>,<span class="number">0.013336182</span>,<span class="number">-0.005065918</span>,<span class="number">-0.023468018</span>,<span class="number">-0.009185791</span>,<span class="number">-0.023864746</span>,<span class="number">-0.021026611</span>,<span class="number">0.031341553</span>,<span class="number">0.04220581</span>,<span class="number">0.010864258</span>,<span class="number">0.028503418</span>,<span class="number">0.06085205</span>,<span class="number">0.06695557</span>,<span class="number">0.07028198</span>,<span class="number">0.0630188</span>,<span class="number">0.04321289</span>,<span class="number">0.00064086914</span>,<span class="number">-0.046417236</span>,<span class="number">-0.039764404</span>,<span class="number">0.005706787</span>,<span class="number">0.031219482</span>,<span class="number">0.036224365</span>,<span class="number">0.03012085</span>,<span class="number">0.02029419</span>,<span class="number">-0.0067749023</span>,<span class="number">-0.049102783</span>,<span class="number">-0.047729492</span>,<span class="number">-0.016937256</span>,<span class="number">0.018554688</span>,<span class="number">0.051361084</span>,<span class="number">0.046569824</span>,<span class="number">0.058288574</span>,<span class="number">0.11074829</span>,<span class="number">0.1312561</span>,<span class="number">0.12875366</span>,<span class="number">0.15158081</span>,<span class="number">0.19308472</span>,<span class="number">0.2720642</span>,<span class="number">0.26748657</span>,<span class="number">-0.035095215</span>,<span class="number">-0.342865</span>,<span class="number">-0.23272705</span>,<span class="number">-0.016723633</span>,<span class="number">0.0007324219</span>,<span class="number">-0.01574707</span>,<span class="number">-0.047424316</span>]</span><br><span class="line">plt.plot(y)</span><br></pre></td></tr></table></figure>
+<pre><code>[&lt;matplotlib.lines.Line2D at 0x1886916bb38&gt;]
+</code></pre><img src="/2019/11/16/dft/output_3_1.png">
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dy1, _ = compute_dft_real_pair(y, np.zeros_like(y))</span><br><span class="line">plt.plot(dy1, label=<span class="string">'my dft'</span>)</span><br><span class="line">plt.plot(np.fft.rfft(y), label=<span class="string">'numpy dft'</span>)</span><br><span class="line">plt.legend()</span><br></pre></td></tr></table></figure>
+<pre><code>&lt;matplotlib.legend.Legend at 0x1886995cbe0&gt;
+</code></pre><img src="/2019/11/16/dft/output_4_1.png">
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rdft</span><span class="params">(x)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    输入长度为N，分解为N/2+1个正弦波和N/2+1个余弦波，得到上面图形的一半</span></span><br><span class="line"><span class="string">    :param x:</span></span><br><span class="line"><span class="string">    :return:</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    N = len(x)</span><br><span class="line">    K = N//<span class="number">2</span>+<span class="number">1</span></span><br><span class="line">    rex, imx = np.zeros((K, )), np.zeros((K, ))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># rex[k] = sum(x[i] * cos(2*pi*k*i/N) for i in range(i, N))</span></span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> range(K):</span><br><span class="line">        rex[k] = sum([x[i]*math.cos(<span class="number">2</span>*math.pi*k*i/N) <span class="keyword">for</span> i <span class="keyword">in</span> range(N)])</span><br><span class="line">        imx[k] = -sum([x[i]*math.sin(<span class="number">2</span>*math.pi*k*i/N) <span class="keyword">for</span> i <span class="keyword">in</span> range(N)])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> rex + <span class="number">1j</span> * imx</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dy2 = rdft(y)</span><br><span class="line">plt.plot(dy2.real, label=<span class="string">'my dft'</span>)</span><br><span class="line">plt.plot(np.fft.rfft(y), label=<span class="string">'numpy dft'</span>)</span><br><span class="line">plt.legend()</span><br></pre></td></tr></table></figure>
+<pre><code>&lt;matplotlib.legend.Legend at 0x188699d05f8&gt;
+</code></pre><img src="/2019/11/16/dft/output_6_1.png">
+<p>$$<br>\begin{aligned}<br>X_k&amp;=\sum_{t=0}^{N-1}x(t)e^{-2\pi itk/N} \\<br>&amp;= \sum_{t=0}^{N-1}x(t){e^{tk}}^{-2\pi i/N} \\<br>&amp;= \sum_{t=0}^{N-1}x(t)W^{tk}, W_N=e^{\frac{-2\pi i}{N}},i是虚数单位<br>\end{aligned}<br>$$</p>
+<p>展开得到:</p>
+<p>$$<br>\begin{aligned}<br>X_0 &amp;= x_0 W_N^{0\times0}+x_1W_N^{0\times1}+ \cdots +x_{N-1}W_N^{0\times(N-1)}<br>\end{aligned}<br>$$</p>
+<p>用矩阵表示<br>$$<br>\begin{bmatrix}<br>X_0\\<br>X_1\\<br>\vdots\\<br>X_{N-1}<br>\end{bmatrix}<br>=<br>\begin{bmatrix}<br>W_N^{0\times0}\ W_N^{0\times1}\ \cdots \ W_N^{0\times(N-1)} \\<br>W_N^{1\times0}\ W_N^{1\times1}\ \cdots \ W_N^{1\times(N-1)} \\<br>\vdots \\<br>W_N^{(N-1)\times0}\ W_N^{(N-1)\times1}\ \cdots \ W_N^{(N-1)\times(N-1)} \\<br>\end{bmatrix}<br>\begin{bmatrix}<br>x_0\\<br>x_1\\<br>\vdots\\<br>x_{N-1}<br>\end{bmatrix}<br>$$</p>
+<p>因为$W_N$是常数， 所以上式等于<br>$$<br>W_N^{<br>\begin{bmatrix}<br>0\times0\ 0\times1\ \cdots\ 0\times(N-1)\\<br>1\times0\ 1\times1\ \cdots\ 1\times(N-1)\\<br>\vdots \\<br>(N-1)\times0\ (N-1)\times1\ \cdots\ (N-1)\times(N-1)\\<br>\end{bmatrix}<br>}<br>=<br>W_N^E<br>$$</p>
+<p>所以DFT公式可以写成:<br>$$<br>X = W_N^E x<br>$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dft_matrix</span><span class="params">(x)</span>:</span></span><br><span class="line">    N = len(x)</span><br><span class="line">    w = np.exp(np.complex(<span class="number">0</span>,<span class="number">-2</span>\timesmath.pi/N))</span><br><span class="line">    e = [[r\timesc <span class="keyword">for</span> c <span class="keyword">in</span> range(N)] <span class="keyword">for</span> r <span class="keyword">in</span> range(N)]</span><br><span class="line">    X = np.power(w, e) @ x</span><br><span class="line">    <span class="keyword">return</span> X</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dy3 = dft_matrix(y)</span><br><span class="line">plt.plot(dy3)</span><br></pre></td></tr></table></figure>
+<pre><code>[&lt;matplotlib.lines.Line2D at 0x1886931d978&gt;]
+</code></pre><img src="/2019/11/16/dft/output_9_1.png">
+<p>IDFT的公式和DFT相似，只不过多了负号：<br>$$<br>\begin{aligned}<br>x(n)&amp;=\frac{1}{N}\sum_{k=0}^{N-1}X(k)e^{\frac{2\pi kn}{N}} \\<br>&amp;=\frac{W_N^E x}{N}, W_N=e^{\frac{2\pi i}{N}},\text{DFT的}W_N=e^{\frac{-2\pi i}{N}}\text{多个负号} \\<br>&amp;=\frac{1}{N}\sum_{k=0}^{N-1}X(k)\left(cos\left(\frac{2\pi kn}{N}\right)+isin\left(\frac{2\pi kn}{N}\right)\right)<br>\end{aligned}<br>$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">idft</span><span class="params">(x)</span>:</span></span><br><span class="line">    N = len(x)</span><br><span class="line">    X = np.zeros((N, ))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(N):</span><br><span class="line">        X[i] = sum([x[k]*np.exp(np.complex(<span class="number">0</span>, <span class="number">2</span>*math.pi*k*i/N)) <span class="keyword">for</span> k <span class="keyword">in</span> range(N)]) / N</span><br><span class="line"><span class="comment">#         angle = 2*math.pi*i/N</span></span><br><span class="line"><span class="comment">#         X[i] = sum([x[k]*(np.complex(math.cos(angle*k), math.sin(angle*k))) for k in range(N)]) / N</span></span><br><span class="line">    <span class="keyword">return</span> X</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">y4 = idft(dy3)</span><br><span class="line">plt.plot(y4.real, label=<span class="string">'idft'</span>)</span><br><span class="line">plt.plot(y, label=<span class="string">'original'</span>)</span><br><span class="line">plt.plot(np.fft.irfft(dy2), label=<span class="string">'numpy irfft'</span>)</span><br><span class="line">plt.legend()</span><br></pre></td></tr></table></figure>
+<pre><code>&lt;matplotlib.legend.Legend at 0x1886fb2cdd8&gt;
+</code></pre><img src="/2019/11/16/dft/output_12_2.png">
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">idft_matrix</span><span class="params">(x)</span>:</span></span><br><span class="line">    N = len(x)</span><br><span class="line">    w = np.exp(np.complex(<span class="number">0</span>,<span class="number">2</span>*math.pi/N))</span><br><span class="line">    e = [[r*c <span class="keyword">for</span> c <span class="keyword">in</span> range(N)] <span class="keyword">for</span> r <span class="keyword">in</span> range(N)]</span><br><span class="line">    X = np.power(w, e) @ x</span><br><span class="line">    <span class="keyword">return</span> X / N</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">y5 = idft_matrix(dy3)</span><br><span class="line">plt.plot(y5, label=<span class="string">'idft_matrix'</span>)</span><br><span class="line">plt.plot(y, label=<span class="string">'original'</span>)</span><br><span class="line">plt.plot(np.fft.irfft(dy2), label=<span class="string">'numpy irfft'</span>)</span><br><span class="line">plt.legend()</span><br></pre></td></tr></table></figure>
+<pre><code>&lt;matplotlib.legend.Legend at 0x1886bd74c88&gt;
+</code></pre><img src="/2019/11/16/dft/output_14_1.png">
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/04/game-theory/" rel="next" title="Game Theory">
+                <i class="fa fa-chevron-left"></i> Game Theory
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/11/20/Expectation-Maximization-Algorithm/" rel="prev" title="Expectation Maximization Algorithm">
+                Expectation Maximization Algorithm <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Firepaw</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Firepaw</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
