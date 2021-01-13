@@ -229,6 +229,130 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/18/Locally-Weighted-Linear-Regression/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Firepaw">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Firepaw">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/18/Locally-Weighted-Linear-Regression/" itemprop="url">Locally Weighted Linear Regression</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-08-18T11:49:14+08:00">
+                2019-08-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>线性回归的目标函数是$\underset{\theta}{\min} \sum_{i=1}^m(y^{(i)}-\theta^T \mathbf x^{(i)})^2)$,<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/08/18/Locally-Weighted-Linear-Regression/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/15/nndl-smo/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1358,156 +1482,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/20/Fenwick-Tree/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Firepaw">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Firepaw">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/20/Fenwick-Tree/" itemprop="url">Fenwick Tree</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-20T10:57:11+08:00">
-                2019-02-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Fenwick-Tree"><a href="#Fenwick-Tree" class="headerlink" title="Fenwick Tree"></a>Fenwick Tree</h1><p>Fenwick tree 又被称为 Binary Indexed Tree 或者 BIT。</p>
-<p>设$f$是可逆函数，$A$是长度为$N$的数组。</p>
-<p>BIT有以下性质：</p>
-<ul>
-<li>可以在$O(logN)$时间内计算区间$[l, r]$内的$f$的值，即$f(A_l, A_{l+1}, \ldots, A_r)$</li>
-<li>可以在$O(logN)$时间内更新$A$的值。</li>
-<li>空间复杂度$O(N)$。</li>
-<li>实现比较简单。</li>
-</ul>
-<p>最常见的应用就是计算区间和，即$f(A_1, A_2, \ldots, A_k)=A_1+A_2+\ldots+A_k$。</p>
-<p>为了简单起见，假设$f$是求和。给定一个数组$A[0\ldots N]$，Fenwick Tree就是个数组$T[0\ldots N]$，它的每一项都是$A$在区间$[g(i), i]$的和：$T_i=\sum_{j=g(i)}^iA_j$，其中$0 \leq g(i) \leq i$。</p>
-<p>可以写出求和和更新的伪代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sum</span><span class="params">(r)</span>:</span></span><br><span class="line">    res = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> r &gt;= <span class="number">0</span>:</span><br><span class="line">        res += T[r]</span><br><span class="line">        r = g(r) - <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">increase</span><span class="params">(index, delta)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> all j <span class="keyword">with</span> g(j) &lt;= i &lt;= j:</span><br><span class="line">        T[j] += delta</span><br></pre></td></tr></table></figure></p>
-<p>其中求和函数sum的流程如下:</p>
-<ol>
-<li>把区间$[g(r), r]$的和加到结果中。</li>
-<li>跳到下一个区间$[g(g(r)-1), g(r)-1]$，把和加到结果中。</li>
-<li>持续上述步骤，直到区间$[0, g(g\ldots g(r)-1 \cdots -1)-1)]$的和添加到结果中。</li>
-</ol>
-<p>increase的过程是更新$A[i]$的值的时候，需要把所有包含$A[i]$的区间的值都更新。</p>
-<p>很明显，两个函数的复杂度都取决于函数$g$，而满足$0 \leq g(i) \leq i$的函数有很多。<br>例如:</p>
-<ol>
-<li>$g(i)=i$，结果就是$T=A$，这样sum函数的复杂度就是$O(N)$，而increase的复杂度是$O(1)$。</li>
-<li>$g(i)=0$，得到的$T$就是前缀和，意味着sum的复杂度是$O(1)$，而更新的复杂度变成了$O(N)$。</li>
-</ol>
-<p>而Fenwick Tree 巧妙的选择$g(i)$使得更新和求和两个操作的复杂度都变成了$O(logN)$。</p>
-<p>Fenwick Tree的$g(i)$ 的操作和简单：用0代替$i$的二进制表示中的末尾的所有的1。<br>下面是一些例子：</p>
-<p>$$<br>g(11)=g(1011_2)=1000_2=8 \<br>g(12)=g(1100_2)=1100_2=12 \<br>g(13)=g(1101_2)=1100_2=12 \<br>g(14)=g(1110_2)=1110_2=14 \<br>g(15)=g(1111_2)=0000_2=0 \<br>$$</p>
-<p>实现这个变换也很简单： $g(i) = i \&amp; (i+1)$。</p>
-<p>现在需要找到一种方法能够遍历所有的满足条件$g(j) \leq i \leq j$的$j$。</p>
-<p>很容易发现，可以从$i$开始，不停的把最后一个0变成1就可以了，把这个变换叫做$h(i)$，例如$i=10$时有：</p>
-<p>$$<br>10=0001010_2 \<br>h(10)=11=0001011_2 \<br>h(11)=15=0001111_2 \<br>h(15)=31=0011111_2 \<br>h(31)=63=0111111_2 \<br>\vdots<br>$$<br>毫不意外得到$h(i) = i | (i+1)$。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1558,7 +1532,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">49</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1571,7 +1545,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">tags</span>
                 
               </div>
